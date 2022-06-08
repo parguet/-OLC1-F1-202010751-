@@ -1,17 +1,13 @@
 
 %lex
-%ignorecase
+%options case-insensitive
 
+//--> Caracter 
+escapechar2      [\'\"\\ntr]
+escape2          \\{escapechar2}
+aceptacion2      [^\'\\] 
+char2         (\'({escape2} | {aceptacion2})\')
 
-
-comentario = ("//" [^"\n"]+)
-comentariolineas = "/*"[^"!>"]*"*/"
-int2 = [0-9]+
-double2 = [0-9]+("."[0-9]+)?\b 
-char2 = "'"[^']"'"
-string2 = \"[^\"]*\"
-caracterEspecial = ([\"][^\n\"]+[\"][\"])
-identificador = ([a-zA-Z])[a-zA-Z0-9_ñÑ]*
 
 %%
 
@@ -20,22 +16,38 @@ identificador = ([a-zA-Z])[a-zA-Z0-9_ñÑ]*
 
 
 
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]                 {
+                        console.log("reconoci token <comentariolineas> con lexema: "+yytext);
+                        return 'comentariolineas';
+                    }
+[/][/].*                                   {   
+                        console.log("reconoci token <comentario> con lexema: "+yytext);
+                        return 'comentario';
+                    }                    
 ","                 {
                         console.log("reconoci token <coma> con lexema: "+yytext);
                         return 'coma';
                     }
 "true"                 {
-                        console.log("reconoci token <boolean2> con lexema: "+yytext);
-                        return 'boolean2';
+                        console.log("reconoci token <true> con lexema: "+yytext);
+                        return 'true';
                     }
 "false"                 {
-                        console.log("reconoci token <boolean2> con lexema: "+yytext);
-                        return 'boolean2';
+                        console.log("reconoci token <false> con lexema: "+yytext);
+                        return 'false';
                     }
 "new"                 {
                         console.log("reconoci token <new> con lexema: "+yytext);
                         return 'new';
-                    }                    
+                    }   
+"++"                 {
+                        console.log("reconoci token <incremento> con lexema: "+yytext);
+                        return 'incremento';
+                    }
+"--"                 {
+                        console.log("reconoci token <decremento> con lexema: "+yytext);
+                        return 'decremento';
+                    }                 
 "+"                 {
                         console.log("reconoci token <suma> con lexema: "+yytext);
                         return 'suma';
@@ -61,29 +73,29 @@ identificador = ([a-zA-Z])[a-zA-Z0-9_ñÑ]*
                         return 'modulo';
                     }
 "=="                 {
-                        console.log("reconoci token <operador> con lexema: "+yytext);
-                        return 'operador';
+                        console.log("reconoci token <dobleigual> con lexema: "+yytext);
+                        return 'dobleigual';
                     }
 "!="                 {
-                        console.log("reconoci token <operador> con lexema: "+yytext);
-                        return 'operador';
+                        console.log("reconoci token <diferenciacion> con lexema: "+yytext);
+                        return 'diferenciacion';
                     }
 
 "<="                 {
-                        console.log("reconoci token <operador> con lexema: "+yytext);
-                        return 'operador';
+                        console.log("reconoci token <menoroigualque> con lexema: "+yytext);
+                        return 'menoroigualque';
                     }
 ">="                 {
-                        console.log("reconoci token <operador> con lexema: "+yytext);
-                        return 'operador';
+                        console.log("reconoci token <mayoroigualque> con lexema: "+yytext);
+                        return 'mayoroigualque';
                     }
 ">"                 {
-                        console.log("reconoci token <operador> con lexema: "+yytext);
-                        return 'operador';
+                        console.log("reconoci token <mayorque> con lexema: "+yytext);
+                        return 'mayorque';
                     }
 "<"                 {
-                        console.log("reconoci token <operador> con lexema: "+yytext);
-                        return 'operador';
+                        console.log("reconoci token <menorque> con lexema: "+yytext);
+                        return 'menorque';
                     }
 "="                 {
                         console.log("reconoci token <igual> con lexema: "+yytext);
@@ -109,6 +121,10 @@ identificador = ([a-zA-Z])[a-zA-Z0-9_ñÑ]*
                         console.log("reconoci token <and> con lexema: "+yytext);
                         return 'and';
                     }
+"^"                 {
+                        console.log("reconoci token <xor> con lexema: "+yytext);
+                        return 'xor';
+                    }                    
 "!"                 {
                         console.log("reconoci token <not> con lexema: "+yytext);
                         return 'not';
@@ -136,6 +152,10 @@ identificador = ([a-zA-Z])[a-zA-Z0-9_ñÑ]*
 "}"                 {
                         console.log("reconoci token <llavec> con lexema: "+yytext);
                         return 'llavec';
+                    }
+"const"               {
+                        console.log("reconoci token <const> con lexema: "+yytext);
+                        return 'const';
                     }
 "int"               {
                         console.log("reconoci token <int> con lexema: "+yytext);
@@ -216,26 +236,16 @@ identificador = ([a-zA-Z])[a-zA-Z0-9_ñÑ]*
 "run"                 {
                         console.log("reconoci token <run> con lexema: "+yytext);
                         return 'run';
-                    }            
-         
-
-comentario                 {
-                        console.log("reconoci token <comentario> con lexema: "+yytext);
-                        return 'comentario';
-                    }
-comentariolineas                 {
-                        console.log("reconoci token <comentariolineas> con lexema: "+yytext);
-                        return 'comentariolineas';
-                    }
+                    }     
+[0-9]+("."[0-9]+)\b    {
+                        console.log("reconoci token <double2> con lexema: "+yytext);
+                        return 'double2';
+                    }       
 [0-9]+                {
                         console.log("reconoci token <int2> con lexema: "+yytext);
                         return 'int2';
                     }
-[0-9]+("."[0-9]+)?\b                 {
-                        console.log("reconoci token <double2> con lexema: "+yytext);
-                        return 'double2';
-                    }
-char2                 {
+{char2}             {
                         console.log("reconoci token <char2> con lexema: "+yytext);
                         return 'char2';
                     }
@@ -243,15 +253,10 @@ char2                 {
                         console.log("reconoci token <string2> con lexema: "+yytext);
                         return 'string2';
                     }
-caracterEspecial                 {
-                        console.log("reconoci token <caracterEspecial> con lexema: "+yytext);
-                        return 'caracterEspecial';
-                    }
 ([a-zA-Z])[a-zA-Z0-9_ñÑ]*                 {
-                        console.log("reconoci token <identificador> con lexema: "+yytext);
-                        return 'identificador';
+                        console.log("reconoci token <id> con lexema: "+yytext);
+                        return 'id';
                     }
-
 [ \r\t]+            {}
 \n                  {}
 <<EOF>>             return 'EOF'; 
@@ -260,10 +265,23 @@ caracterEspecial                 {
                     }
 /lex
 
+//presedencia de operadores
+%left 'interrogacionc'
+%left 'or'
+%left 'and'
+%right 'not' 'xor'
+%left 'dobleigual' 'diferenciacion'
+%left 'menorque' 'menoroigualque' 'mayorque' 'mayoroigualque'
+%left 'suma' 'resta'
+%left 'multiplicacion' 'division' 'modulo'
+%right 'potencia'
+%left 'decremento' 'incremento'
 
 %start ini
 
+
 %%
+//lenguaje grammar
 
 ini
 	: INSTRUCCIONES EOF {return $1}
@@ -274,207 +292,70 @@ INSTRUCCIONES
 ;
 
 INSTRUCCION
-	: INCREMENTO      
-    | DECREMENTO 
-    | ASIGNACION 
-    | DECLARACION     
-    | CASTEOSE
-    | DECLARACIONSVECTORES
-    | ACCESOVECTORES
-    | IF
-    | SWITCH
-    | WHILE  
-    | FOR 
-    | DOWHILE
-    | BREAK
-    | CONTINUE
-    | RETURN
-    | METODOS
-    | LLAMADAS
-    | PRINT {$$ = $1}
-    | PRINTLN
-    | RUN
-;
-RUN 
-    : run LLAMADAS
-;
-
-PRINTLN
-    : println parentesisa EXPRESIONESPRINT parentesisc puntocoma
-;
-PRINT
-    : print parentesisa EXPRESIONESPRINT parentesisc puntocoma {$$= new Print($3, @1.first_line, @1.first_column)}
-;
-EXPRESIONESPRINT
-    : LLAMADAS 
-    | LLAMADAS EXPRESIONESPRINT
-    | suma
-    | string2 {$$= new Literal($1,Type.STRING,  @1.first_line, @1.first_column)}
-    | identificador
-    | identificador EXPRESIONESPRINT
-    | suma EXPRESIONESPRINT
-    | string2 EXPRESIONESPRINT
-    
-;
-
-LLAMADAS
-    : identificador parentesisa PARAMETROSLLAMADA parentesisc puntocoma
-    | identificador parentesisa parentesisc puntocoma
-    | identificador parentesisa PARAMETROSLLAMADA parentesisc 
-    | identificador parentesisa parentesisc 
-;
-PARAMETROSLLAMADA 
-    : identificador 
-    | EXPRESION 
-    | identificador coma PARAMETROSLLAMADA
-    | EXPRESION coma PARAMETROSLLAMADA
-;
-
-METODOS
-    : identificador parentesisa parentesisc llavea INSTRUCCIONES llavec
-    | identificador parentesisa parentesisc dospuntos void llavea INSTRUCCIONES llavec
-    | identificador parentesisa PARAMETROS parentesisc llavea INSTRUCCIONES llavec
-    | identificador parentesisa PARAMETROS parentesisc dospuntos void llavea INSTRUCCIONES llavec
-
-;
-PARAMETROS
-    : TIPO identificador
-    | TIPO identificador coma PARAMETROS
+    : DECLARACION_DE_VARIABLES 
+	| DECLARACION_DE_CONSTANTES
+    | ASIGNACION_DE_VARIABLES           
 ;
 
 
-BREAK
-    : break puntocoma
-; 
-CONTINUE
-    : continue puntocoma
-;  
-RETURN
-    : return puntocoma
-    | return EXPRESION puntocoma
-    | return identificador puntocoma
+
+
+DECLARACION_DE_VARIABLES
+    : TIPO LISTA_DE_IDS igual E puntocoma 
+    | TIPO LISTA_DE_IDS igual 
 ; 
 
-DOWHILE
-    : do llavea INSTRUCCIONES llavec while parentesisa EXPRESIONIF parentesisc puntocoma
+DECLARACION_DE_CONSTANTES
+    : const TIPO LISTA_DE_IDS igual E puntocoma 
+    | const TIPO LISTA_DE_IDS igual 
 ; 
 
-
-FOR
-    : for parentesisa DECLARACION EXPRESIONIF puntocoma ACTUALIZACION parentesisc llavea INSTRUCCIONES llavec
-    | for parentesisa ASIGNACION EXPRESIONIF puntocoma ACTUALIZACION parentesisc llavea INSTRUCCIONES llavec
-;    
-ACTUALIZACION
-    : identificador suma suma
-    | identificador resta resta
-    | identificador igual identificador resta int2
-    | identificador igual identificador suma int2
-;
-WHILE
-    : while parentesisa EXPRESIONIF parentesisc llavea INSTRUCCIONES llavec
-;    
-
-IF
-    : if parentesisa EXPRESIONIF parentesisc llavea INSTRUCCIONES llavec
-    | if parentesisa EXPRESIONIF parentesisc llavea INSTRUCCIONES llavec else ELSE
-    | if parentesisa EXPRESIONIF parentesisc llavea INSTRUCCIONES llavec else IF
-;
-
-EXPRESIONIF
-    : identificador operador EXPRESION 
-    | identificador operador EXPRESION and EXPRESIONIF 
-    | identificador operador EXPRESION or EXPRESIONIF 
-;
-
-ELSE
-    : llavea INSTRUCCIONES llavec
-;
-
-
-
-SWITCH
-    : switch parentesisa identificador parentesisc llavea CASESLIST DEFAULT llavec
-    | switch parentesisa identificador parentesisc llavea CASESLIST llavec
-    | switch parentesisa identificador parentesisc llavea DEFAULT llavec
-;
-CASESLIST
-    : case EXPRESION dospuntos INSTRUCCIONES CASESLIST
-    | case EXPRESION dospuntos INSTRUCCIONES
-;
-DEFAULT
-    : default dospuntos INSTRUCCIONES
-;
-
-
-DECLARACIONESVECTORES 
-    : DECLARACION1
-;
-
-DECLARACIOON1
-    : TIPO identificador corchetea corchetec igual new TIPO CORCHETESEXP puntocoma
-;
-CORCHETES
-    : corchetea corchetec
-    | corchetea corchetec CORCHETES 
-;
-CORCHETESEXP
-    : corchetea EXPRESION corchetec 
-    | corchetea EXPRESION corchetec CORCHETESEXP 
-;
-
-DECLARACIOON2
-    : TIPO identificador CORCHETES igual corchetea LISTAVALORES corchetec puntocoma
-    | TIPO identificador CORCHETES igual corchetea LISTAVALORES1 corchetec puntocoma
-;
-LISTAVALORES1
-    : EXPRESION
-    | EXPRESION LISTAVALORES1
-;
-LISTAVALORES
-    : corchetea LISTAVALORES2 coma LISTAVALORES
-    | corchetea LISTAVALORES2
-;
-LISTAVALORES2
-    : EXPRESION coma LISTAVALORES2 
-    | EXPRESION corchetec
-;
-
-ACCESOVECTORES
-    : identificador CORCHETESEXP
-;
-
-INCREMENTO 
-    : identificador suma suma puntocoma
-;
-DECREMENTO 
-    : identificador resta resta puntocoma
-;
-CASTEOS
-    : parentesisa TIPO parentesisc EXPRESION puntocoma
-;  
-ASIGNACION
-    : identificador igual EXPRESION puntocoma
-;  
-DECLARACION
-    : TIPO IDENTIFICADORES puntocoma
-;    
-IDENTIFICADORES
-    : identificador 
-    | identificador coma IDENTIFICADORES
-    | identificador igual EXPRESION
-;
-
-EXPRESION
-    : int2
-    | string2
-    | double2
-    | char2
-    | boolean2
-;    
 TIPO
     : int 	
     | double 	
-    | boolean 	
-    | char 	
     | string 
+    | char 	
+    | boolean 	
 ;
+
+
+
+LISTA_DE_IDS
+    : LISTA_DE_IDS coma id // {$1.push($3); $$ = $1;}
+    | id // {$$ = [$1]}
+;
+
+ASIGNACION_DE_VARIABLES
+    :id igual E puntocoma  // { $$ = new asignacion.default($1, $3, @1.first_line, @1.last_column); }
+; 
+
+
+E : E suma E        // { $$ = new aritmetica.default($1, '+', $3, @1.first_line, @1.last_column,false); }
+    | E resta E     // { $$ = new aritmetica.default($1, '-', $3, @1.first_line, @1.last_column,false); }
+    | E division E       // { $$ = new aritmetica.default($1, '/', $3, @1.first_line, @1.last_column,false); }
+    | E potencia E       // { $$ = new aritmetica.default($1, '**', $3, @1.first_line, @1.last_column,false); }
+    | E multiplicacion E   // { $$ = new aritmetica.default($1, '*', $3, @1.first_line, @1.last_column,false); }
+    | E modulo E        // { $$ = new aritmetica.default($1, '%', $3, @1.first_line, @1.last_column,false); }
+    | E mayoroigualque E // { $$ = new relacional.default($1, '>=', $3, @1.first_line, @1.last_column,false); }
+    | E mayorque E  // { $$ = new relacional.default($1, '>', $3, @1.first_line, @1.last_column,false); }
+    | E menoroigualque E // { $$ = new relacional.default($1, '<=', $3, @1.first_line, @1.last_column,false); }
+    | E menorque E // { $$ = new relacional.default($1, '<', $3, @1.first_line, @1.last_column,false); }
+    | E dobleigual E // { $$ = new relacional.default($1, '==', $3, @1.first_line, @1.last_column,false); }
+    | E diferenciacion E // { $$ = new relacional.default($1, '!=', $3, @1.first_line, @1.last_column,false); }
+    | E and E      // { $$ = new logica.default($1, '&&', $3, @1.first_line, @1.last_column,false); }
+    | E or E       // { $$ = new logica.default($1, '||', $3, @1.first_line, @1.last_column,false); }
+    | not E         // { $$ = new logica.default($2, '!', null, @1.first_line, @1.last_column,true); }
+    | parentesisa E parentesisc      // { $$ = $2; }
+    | double2          // { $$ = new primitivo.default(Number($1), 'DOBLE', @1.first_line, @1.last_column); }
+    | int2           // { $$ = new primitivo.default(Number($1), 'ENTERO', @1.first_line, @1.last_column); }
+    | id               // { $$ = new identificador.default($1, @1.first_line, @1.last_column); }
+    | string2           // { $1 = $1.slice(1, $1.length-1); $$ = new primitivo.default($1, 'CADENA', @1.first_line, @1.last_column); }
+    | char2         // { $1 = $1.slice(1, $1.length-1); $$ = new primitivo.default($1, 'CARACTER', @1.first_line, @1.last_column); }
+    | true              // { $$ = new primitivo.default(true, 'BOOLEANO', @1.first_line, @1.last_column); }
+    | false             // { $$ = new primitivo.default(false, 'BOOLEANO', @1.first_line, @1.last_column); }
+    | E interrogacionc E dospuntos E // { $$ = new ternario.default($1, $3, $5, @1.first_line, @1.last_column); }
+    | id incremento        // { $$ = new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
+    | id decremento        // { $$ = new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
+;
+
+

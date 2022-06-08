@@ -2,6 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
+const parser = require("./gramatica");
+
+
 
 app.set('port', 8080);
 
@@ -19,7 +22,9 @@ app.get("/", function (req, res) {
 
 
 app.post("/", function (req, res) {
-    console.log(req.body);
+    console.log(req.body.texto.toString());
+    console.log("");
+    parser.parse(req.body.texto.toString());
     res.send("Hello World");
 }   // end of post
 );

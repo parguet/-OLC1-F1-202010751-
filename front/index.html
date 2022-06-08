@@ -21,10 +21,10 @@
       </div>
     
         <br><br>
-      <h2>cargar archivo .cst</h2>
+      <h2>Cargar Archivo .LF</h2>
         <input type="file" id="archivo" >
         <br><br>
-        <textarea id="textArea" name="cadena" [(ngModel)]="texto" rows="18"  style="width: 40rem;"></textarea>
+        <textarea id="textArea" name="cadena" rows="18"  style="width: 40rem;"></textarea>
         <button id="set" (click)='setdata()'>Enviar</button>
 
       
@@ -40,7 +40,7 @@
             if(archivo){
                 let reader=new FileReader();
                 reader.onload = function(e) {
-                    let contenido=e.target.result;
+                    let contenido=e.target.result.toString();
                     document.getElementById('textArea').innerText = contenido;
                   };
                   reader.readAsText(archivo);
