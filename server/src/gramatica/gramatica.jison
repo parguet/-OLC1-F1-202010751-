@@ -50,17 +50,17 @@ char2         (\'({escape2} | {aceptacion2})\')
                         console.log("reconoci token <resta> con lexema: "+yytext);
                         return 'resta';
                     }
-"*"                 {
-                        console.log("reconoci token <multiplicacion> con lexema: "+yytext);
-                        return 'multiplicacion';
+"**"                 {
+                        console.log("reconoci token <potencia> con lexema: "+yytext);
+                        return 'potencia';
                     }
 "/"                 {
                         console.log("reconoci token <division> con lexema: "+yytext);
                         return 'division';
                     }
-"^"                 {
-                        console.log("reconoci token <potencia> con lexema: "+yytext);
-                        return 'potencia';
+"*"                 {
+                        console.log("reconoci token <multiplicacion> con lexema: "+yytext);
+                        return 'multiplicacion';
                     }
 "%"                 {
                         console.log("reconoci token <modulo> con lexema: "+yytext);
@@ -294,39 +294,39 @@ INSTRUCCIONES
 ;
 
 INSTRUCCION
-    : DECLARACION_DE_VARIABLES 
-	| DECLARACION_DE_CONSTANTES
-    | ASIGNACION_DE_VARIABLES 
+    : DECLARACION_DE_VARIABLES puntocoma
+	| DECLARACION_DE_CONSTANTES puntocoma
+    | ASIGNACION_DE_VARIABLES puntocoma
     | SENTENCIA_IF 
+    | SENTENCIA_IF_SIMPLE
     | SENTENCIA_SWITCH
-    | break puntocoma
-    | SENTENCIA_FOR    
-    | id decremento puntocoma  // { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
-    | id incremento puntocoma  // { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
-    | SENTENCIA_WHILE       
-    | SENTENCIA_DO_WHILE      
-    | continue puntocoma  // { $$ = new continuar.default(); } 
+    | SENTENCIA_FOR
+    | SENTENCIA_WHILE
+    | SENTENCIA_DO_WHILE   
     | FUNCIONES
+    | BLOQUE
     | LLAMADA puntocoma   // { $$ = $1; }
     | return puntocoma       // { $$ = new retorno.default(null); } 
     | return E puntocoma     // { $$ = new retorno.default($2); } 
-    | BLOQUE
-    | PRINTLN
-    | PRINT 
-    | error     { console.log("Error Sintactico" + yytext + "linea: " + this._$.first_line + "columna: " + this._$.first_column); }
+    | break puntocoma
+    | id decremento puntocoma  // { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+    | id incremento puntocoma  // { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+    | continue puntocoma  // { $$ = new continuar.default(); } 
+    | PRINT puntocoma
+    | PRINTLN puntocoma
+    | error     { console.log("Error Sintactico " + yytext + " linea: " + this._$.first_line + " columna: " + this._$.first_column); }
 ;
 
 
 
 
 DECLARACION_DE_VARIABLES
-    : TIPO LISTA_DE_IDS igual E puntocoma 
+    : TIPO LISTA_DE_IDS igual E  
     | TIPO LISTA_DE_IDS igual 
 ; 
 
 DECLARACION_DE_CONSTANTES
-    : const TIPO LISTA_DE_IDS igual E puntocoma 
-    | const TIPO LISTA_DE_IDS igual 
+    : const DECLARACION_DE_VARIABLES 
 ; 
 
 TIPO
@@ -345,18 +345,50 @@ LISTA_DE_IDS
 ;
 
 ASIGNACION_DE_VARIABLES
-    :id igual E puntocoma  // { $$ = new asignacion.default($1, $3, @1.first_line, @1.last_column); }
+    :id igual E  // { $$ = new asignacion.default($1, $3, @1.first_line, @1.last_column); }
 ; 
 
-SENTENCIA_IF 
-        : if parentesisa E parentesisc INSTRUCCION 
-        | if parentesisa E parentesisc INSTRUCCION else INSTRUCCION // { $$ = new Ifs.default($3, $6, $10, @1.first_line, @1.last_column); }
-        | if parentesisa E parentesisc INSTRUCCION else SENTENCIA_IF 
-        | if parentesisa E parentesisc llavea INSTRUCCIONES llavec // { $$ = new Ifs.default($3, $6, [], @1.first_line, @1.last_column); }
+SENTENCIA_IF  
+        : if parentesisa E parentesisc llavea INSTRUCCIONES llavec // { $$ = new Ifs.default($3, $6, [], @1.first_line, @1.last_column); }
         | if parentesisa E parentesisc llavea INSTRUCCIONES llavec else llavea INSTRUCCIONES llavec // { $$ = new Ifs.default($3, $6, $10, @1.first_line, @1.last_column); }
         | if parentesisa E parentesisc llavea INSTRUCCIONES llavec else SENTENCIA_IF // { $$ = new Ifs.default($3, $6, [$9], @1.first_line, @1.last_column); }
 ;
 
+SENTENCIA_IF_SIMPLE 
+        : if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE 
+        | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else INSTRUCCION_IF_SIMPLE // { $$ = new Ifs.default($3, $6, $10, @1.first_line, @1.last_column); }
+        | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else SENTENCIA_IF_SIMPLE 
+;
+
+INSTRUCCION_IF_SIMPLE
+    : DECLARACION_DE_VARIABLES puntocoma
+	| DECLARACION_DE_CONSTANTES puntocoma
+    | ASIGNACION_DE_VARIABLES puntocoma
+    | LLAMADA puntocoma   // { $$ = $1; }
+    | return puntocoma       // { $$ = new retorno.default(null); } 
+    | return E puntocoma     // { $$ = new retorno.default($2); } 
+    | break puntocoma
+    | id decremento puntocoma  // { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+    | id incremento puntocoma  // { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+    | continue puntocoma  // { $$ = new continuar.default(); } 
+    | PRINT puntocoma
+    | PRINTLN puntocoma
+    
+;
+
+SENTENCIA_SWITCH
+            : switch parentesisa E parentesisc llavea LISTA_DE_CASOS llavec          // { $$ = new Switch.default($3, $6, null, @1.first_line, @1.last_column); }
+;
+
+LISTA_DE_CASOS
+    : LISTA_DE_CASOS CASO      //{ $$ = $1; $$.push($2); }
+    | CASO                    // { $$ = new Array(); $$.push($1); }
+;
+
+CASO 
+    : case E dospuntos INSTRUCCIONES // { $$ = new caso.default($2, $4, @1.first_line, @1.last_column); }
+    | default dospuntos INSTRUCCIONES
+;
 
 SENTENCIA_FOR 
         : for parentesisa DECLARACION_ASIGNACION_FOR puntocoma E puntocoma ACTUALIZACION_FOR parentesisc llavea INSTRUCCIONES llavec //{ $$ = new For.default($3, $5, $7, $10, @1.first_line, @1.last_column); }
@@ -387,20 +419,6 @@ SENTENCIA_DO_WHILE
     : do llavea INSTRUCCIONES llavec while parentesisa E parentesisc puntocoma // { $$ = new DoWhile.default($6, $9, @1.first_line, @1.last_column); }
 ;
 
-SENTENCIA_SWITCH
-            : switch parentesisa E parentesisc llavea LISTA_DE_CASOS llavec          // { $$ = new Switch.default($3, $6, null, @1.first_line, @1.last_column); }
-;
-
-LISTA_DE_CASOS
-    : LISTA_DE_CASOS CASO      //{ $$ = $1; $$.push($2); }
-    | CASO                    // { $$ = new Array(); $$.push($1); }
-;
-
-CASO 
-    : case E dospuntos INSTRUCCIONES // { $$ = new caso.default($2, $4, @1.first_line, @1.last_column); }
-    | default dospuntos INSTRUCCIONES
-;
-
 FUNCIONES 
         : TIPO id parentesisa LISTA_DE_PARAMETROS parentesisc llavea INSTRUCCIONES llavec  // { $$ = new funcion.default(2, $1, $2, $4, false, $7,  @1.first_line, @1.last_column); }
         | TIPO id parentesisa  parentesisc llavea INSTRUCCIONES llavec                // { $$ = new funcion.default(2, $1, $2, [], false, $6,  @1.first_line, @1.last_column); }
@@ -416,6 +434,8 @@ LISTA_DE_PARAMETROS
 LLAMADA 
         : call id parentesisa LISTA_DE_VALORES parentesisc  // {$$ = new llamada.default($1, $3,@1.first_line, @1.last_column ); }
         | call id parentesisa  parentesisc           // {$$ = new llamada.default($1, [] ,@1.first_line, @1.last_column ); }
+        | id parentesisa LISTA_DE_VALORES parentesisc
+        | id parentesisa  parentesisc
 ; 
 
 LISTA_DE_VALORES 
@@ -425,6 +445,15 @@ LISTA_DE_VALORES
 
 BLOQUE
     :llavea INSTRUCCIONES llavec
+;
+
+PRINT
+    : print parentesisa E parentesisc //{$$ = new Print($3, @1.first_line, @1.last_column);}
+    | print parentesisa parentesisc // {$$ = new Println(null, @1.first_line, @1.last_column);}
+;
+PRINTLN
+        : println parentesisa E parentesisc // {$$ = new Println($3, @1.first_line, @1.last_column);}
+        | println parentesisa parentesisc // {$$ = new Println(null, @1.first_line, @1.last_column);}
 ;
 
 
@@ -451,10 +480,9 @@ E : E suma E        // { $$ = new aritmetica.default($1, '+', $3, @1.first_line,
     | char2         // { $1 = $1.slice(1, $1.length-1); $$ = new primitivo.default($1, 'CARACTER', @1.first_line, @1.last_column); }
     | true              // { $$ = new primitivo.default(true, 'BOOLEANO', @1.first_line, @1.last_column); }
     | false             // { $$ = new primitivo.default(false, 'BOOLEANO', @1.first_line, @1.last_column); }
-    | E interrogacionc E dospuntos E // { $$ = new ternario.default($1, $3, $5, @1.first_line, @1.last_column); }
     | id incremento        // { $$ = new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
     | id decremento        // { $$ = new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
-    | LLAMADA          // { $$ = $1; } 
+    | LLAMADA         // { $$ = $1; } 
     | typeof parentesisa E parentesisc // {$$ = new tipoof.default($3, @1.first_line, @1.last_column ); }
 ;
 

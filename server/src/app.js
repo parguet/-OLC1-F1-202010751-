@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
-const parser = require("./gramatica");
+const parser = require("./gramatica/gramatica");
 
 
 
@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 const path = require('path');
 
 app.get("/", function (req, res) {
-    res.sendFile(path.resolve(__dirname, '../front/index.html'));
+    res.sendFile(path.resolve(__dirname, '../../front/index.html'));
 }   // end of get
 );
 
