@@ -2,12 +2,11 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
-const parser = require("./gramatica/gramatica");
-
+const parser = require("../javaScript/gramatica/gramatica");
+const {Environment} = require("../javaScript/symbols/environment");
 
 
 app.set('port', 8080);
-
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json())
@@ -24,7 +23,15 @@ app.get("/", function (req, res) {
 app.post("/", function (req, res) {
     console.log(req.body.texto.toString());
     console.log("");
-    parser.parse(req.body.texto.toString());
+    let ast = parser.parse(req.body.texto.toString());
+    let env = new Environment(null);
+    for (let instruccion of ast){
+        try {
+            instruccion.ejecutar(env);
+        } catch (error) {
+            
+        }
+    }
     res.send("Hello World");
 }   // end of post
 );

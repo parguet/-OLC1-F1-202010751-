@@ -1,4 +1,14 @@
 
+%{  
+  //codigo en JS
+  // importaciones y declaraciones
+  const {Declaracion} = require('../instrucciones/declaracion');  
+  var array_erroresLexicos;
+  const {type} = require('../symbols/type');
+    
+%}
+
+
 %lex
 %options case-insensitive
 
@@ -294,7 +304,7 @@ INSTRUCCIONES
 ;
 
 INSTRUCCION
-    : DECLARACION_DE_VARIABLES puntocoma
+    : DECLARACION_DE_VARIABLES puntocoma {$$ = $1;}
 	| DECLARACION_DE_CONSTANTES puntocoma
     | ASIGNACION_DE_VARIABLES puntocoma
     | SENTENCIA_IF 
@@ -321,8 +331,8 @@ INSTRUCCION
 
 
 DECLARACION_DE_VARIABLES
-    : TIPO LISTA_DE_IDS igual E  
-    | TIPO LISTA_DE_IDS igual 
+    : TIPO LISTA_DE_IDS igual E  {$$ = new Declaracion($2, $1, $4, @1.first_line, @1.first_column);}
+    | TIPO LISTA_DE_IDS igual {$$ = new Declaracion($2, $1, null, @1.first_line, @1.first_column);}
 ; 
 
 DECLARACION_DE_CONSTANTES
@@ -330,18 +340,18 @@ DECLARACION_DE_CONSTANTES
 ; 
 
 TIPO
-    : int 	
-    | double 	
-    | string 
-    | char 	
-    | boolean 	
+    : int 	    { $$ = $1; }
+    | double 	{ $$ = $1; }
+    | string    { $$ = $1; }
+    | char 	    { $$ = $1; }
+    | boolean 	{ $$ = $1; }
 ;
 
 
 
 LISTA_DE_IDS
-    : LISTA_DE_IDS coma id // {$1.push($3); $$ = $1;}
-    | id // {$$ = [$1]}
+    : LISTA_DE_IDS coma id {$1.push($3); $$ = $1;}
+    | id {$$ = [$1];}
 ;
 
 ASIGNACION_DE_VARIABLES
@@ -358,6 +368,7 @@ SENTENCIA_IF_SIMPLE
         : if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE 
         | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else INSTRUCCION_IF_SIMPLE // { $$ = new Ifs.default($3, $6, $10, @1.first_line, @1.last_column); }
         | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else SENTENCIA_IF_SIMPLE 
+        
 ;
 
 INSTRUCCION_IF_SIMPLE
@@ -373,7 +384,6 @@ INSTRUCCION_IF_SIMPLE
     | continue puntocoma  // { $$ = new continuar.default(); } 
     | PRINT puntocoma
     | PRINTLN puntocoma
-    
 ;
 
 SENTENCIA_SWITCH
@@ -473,13 +483,13 @@ E : E suma E        // { $$ = new aritmetica.default($1, '+', $3, @1.first_line,
     | E or E       // { $$ = new logica.default($1, '||', $3, @1.first_line, @1.last_column,false); }
     | not E         // { $$ = new logica.default($2, '!', null, @1.first_line, @1.last_column,true); }
     | parentesisa E parentesisc      // { $$ = $2; }
-    | double2          // { $$ = new primitivo.default(Number($1), 'DOBLE', @1.first_line, @1.last_column); }
-    | int2           // { $$ = new primitivo.default(Number($1), 'ENTERO', @1.first_line, @1.last_column); }
+    | double2           { $$ = new primitivo(Number($1), type.DOUBLE, @1.first_line, @1.last_column); }
+    | int2            { $$ = new primitivo(Number($1), type.INT, @1.first_line, @1.last_column); }
     | id               // { $$ = new identificador.default($1, @1.first_line, @1.last_column); }
-    | string2           // { $1 = $1.slice(1, $1.length-1); $$ = new primitivo.default($1, 'CADENA', @1.first_line, @1.last_column); }
-    | char2         // { $1 = $1.slice(1, $1.length-1); $$ = new primitivo.default($1, 'CARACTER', @1.first_line, @1.last_column); }
-    | true              // { $$ = new primitivo.default(true, 'BOOLEANO', @1.first_line, @1.last_column); }
-    | false             // { $$ = new primitivo.default(false, 'BOOLEANO', @1.first_line, @1.last_column); }
+    | string2            { $$ = new primitivo($1, type.STRING, @1.first_line, @1.last_column); }
+    | char2          { $$ = new primitivo($1, type.CHAR, @1.first_line, @1.last_column); }
+    | true               { $$ = new primitivo(true, type.BOOLEAN, @1.first_line, @1.last_column); }
+    | false              {$$ = new primitivo(false, type.BOOLEAN, @1.first_line, @1.last_column); }
     | id incremento        // { $$ = new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
     | id decremento        // { $$ = new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
     | LLAMADA         // { $$ = $1; } 
