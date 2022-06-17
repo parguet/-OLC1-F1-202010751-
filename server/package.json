@@ -1,33 +1,28 @@
 {
-  "name": "olc1-f1-202010751",
+  "name": "servidor-interprete",
   "version": "1.0.0",
-  "description": "",
+  "description": "Servidor del interprete de olc1 c",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "start": "nodemon ./app/index.ts",
     "dev": "node ./src/app.js",
-    "jison": "jison ./javaScript/gramatica/gramatica.jison && move gramatica.js ./javaScript/gramatica"
+    "jison": "jison ./src/Analizador/interprete.jison && move interprete.js ./src/Analizador"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/parguet/-OLC1-F1-202010751-.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/parguet/-OLC1-F1-202010751-/issues"
-  },
-  "homepage": "https://github.com/parguet/-OLC1-F1-202010751-#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.1",
+    "express": "^4.17.1",
+    "express-load": "^1.1.7",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/morgan": "^1.9.3",
-    "@types/node": "^17.0.43"
+    "@types/node": "^16.11.40",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
   }
 }
