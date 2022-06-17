@@ -1,4 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -26,21 +41,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Errores_1 = __importDefault(require("../../Ast/Errores"));
-const Nodo_1 = __importDefault(require("../../Ast/Nodo"));
-const Tipo_1 = require("../../TablaSimbolos/Tipo");
-const Operacion_1 = __importStar(require("./Operacion"));
-class Aritmetica extends Operacion_1.default {
+var Errores_1 = __importDefault(require("../../Ast/Errores"));
+var Nodo_1 = __importDefault(require("../../Ast/Nodo"));
+var Tipo_1 = require("../../TablaSimbolos/Tipo");
+var Operacion_1 = __importStar(require("./Operacion"));
+var Aritmetica = /** @class */ (function (_super) {
+    __extends(Aritmetica, _super);
     /**
      * @constructor este constructor utiliza el mismo de la clase Operacion
      */
-    constructor(exp1, signo_operador, exp2, linea, columna, expU) {
-        super(exp1, signo_operador, exp2, linea, columna, expU);
+    function Aritmetica(exp1, signo_operador, exp2, linea, columna, expU) {
+        return _super.call(this, exp1, signo_operador, exp2, linea, columna, expU) || this;
     }
     //geTipo retorna el tipo de la expresion aritmetica 
-    getTipo(controlador, ts) {
-        let tipo_exp1;
-        let tipo_exp2;
+    Aritmetica.prototype.getTipo = function (controlador, ts) {
+        var tipo_exp1;
+        var tipo_exp2;
         if (this.expU == false) {
             /** Ejemplo 1
              *  10 + 30.5 -> exp1 + exp2 -> exp1 = 10, exp2 = 30.5
@@ -312,14 +328,14 @@ class Aritmetica extends Operacion_1.default {
                 break;
         }
         return Tipo_1.tipo.ERROR;
-    }
-    getValor(controlador, ts) {
-        let valor_exp1;
-        let valor_exp2;
-        let valor_expU;
-        let tipo_exp1;
-        let tipo_exp2;
-        let tipo_expU;
+    };
+    Aritmetica.prototype.getValor = function (controlador, ts) {
+        var valor_exp1;
+        var valor_exp2;
+        var valor_expU;
+        var tipo_exp1;
+        var tipo_exp2;
+        var tipo_expU;
         if (this.expU == false) {
             //Ejemplo si fuera  1 + 2.5 -> exp1 = 1, exp2 = 2.5
             tipo_exp1 = this.exp1.getTipo(controlador, ts); // ENTERO
@@ -345,7 +361,7 @@ class Aritmetica extends Operacion_1.default {
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
                         // Ejemplo: 1 + true -> 1 + 1 = 2 
-                        let num_del_booleano = 1;
+                        var num_del_booleano = 1;
                         if (valor_exp2 == false) {
                             num_del_booleano = 0;
                         }
@@ -353,7 +369,7 @@ class Aritmetica extends Operacion_1.default {
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         // 1 + 'A' -> 1 + 65 = 66
-                        let num_ascci = valor_exp2.charCodeAt(0);
+                        var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 + num_ascci;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
@@ -373,7 +389,7 @@ class Aritmetica extends Operacion_1.default {
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
                         // 1 + true -> 1 + 1 = 2 
-                        let num_del_booleano = 1;
+                        var num_del_booleano = 1;
                         if (valor_exp2 == false) {
                             num_del_booleano = 0;
                         }
@@ -381,7 +397,7 @@ class Aritmetica extends Operacion_1.default {
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         // 1.1 + 'A' -> 1.1 + 65 = 66.1
-                        let num_ascci = valor_exp2.charCodeAt(0);
+                        var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 + num_ascci;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
@@ -389,15 +405,15 @@ class Aritmetica extends Operacion_1.default {
                     }
                     else {
                         // 3.4 +  id (id no existe en la tabla de simblos)
-                        let error = new Errores_1.default("Semantico", `Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error.`, this.linea, this.columna);
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error.", this.linea, this.columna);
                         controlador.errores.push(error);
-                        controlador.append(` *** ERROR: Semantico, Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error. En la linea ${this.linea} y columna ${this.columna}`);
+                        controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                         return null;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.BOOLEANO) {
                     // valor_exp1 = true | false
-                    let num_bool_exp1 = 1;
+                    var num_bool_exp1 = 1;
                     if (valor_exp1 == false) {
                         num_bool_exp1 = 0;
                     }
@@ -411,14 +427,14 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 + valor_exp2; //true + "hola" -> "truehola"
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //TODO: reportar error semantico
                         return null;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
                     // 'A' + 1 -> 65 + 1 -> 66
-                    let num_ascci = valor_exp1.charCodeAt(0);
+                    var num_ascci = valor_exp1.charCodeAt(0);
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
                         return num_ascci + valor_exp2;
                     }
@@ -432,7 +448,7 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 + valor_exp2; //'A' + "hola" -> "Ahola"
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //TODO: reportar error semantico
                         return null;
                     }
@@ -442,7 +458,7 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 + valor_exp2;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //TODO: reportar error semantico
                         return null;
                     }
@@ -457,25 +473,25 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 - valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
-                        let num_del_booleano = 1;
+                        var num_del_booleano = 1;
                         if (valor_exp2 == false) {
                             num_del_booleano = 0;
                         }
                         return valor_exp1 - num_del_booleano;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        let num_ascci = valor_exp2.charCodeAt(0);
+                        var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 - num_ascci;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        let num_ascci = valor_exp1.charCodeAt(0);
+                        var num_ascci = valor_exp1.charCodeAt(0);
                         return num_ascci - valor_exp2;
                     }
                 }
@@ -488,7 +504,7 @@ class Aritmetica extends Operacion_1.default {
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
                         // 1 + true -> 1 + 1 = 2 
-                        let num_del_booleano = 1;
+                        var num_del_booleano = 1;
                         if (valor_exp2 == false) {
                             num_del_booleano = 0;
                         }
@@ -496,7 +512,7 @@ class Aritmetica extends Operacion_1.default {
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         // 1.1 + 'A' -> 1.1 + 65 = 66.1
-                        let num_ascci = valor_exp2.charCodeAt(0);
+                        var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 - num_ascci;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
@@ -504,9 +520,9 @@ class Aritmetica extends Operacion_1.default {
                     }
                     else {
                         // 3.4 +  id (id no existe en la tabla de simblos)
-                        let error = new Errores_1.default("Semantico", `Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error.`, this.linea, this.columna);
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error.", this.linea, this.columna);
                         controlador.errores.push(error);
-                        controlador.append(` *** ERROR: Semantico, Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error. En la linea ${this.linea} y columna ${this.columna}`);
+                        controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                         return null;
                     }
                 }
@@ -520,11 +536,11 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 * valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        let num_ascci = valor_exp2.charCodeAt(0);
+                        var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 * num_ascci;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
@@ -537,11 +553,11 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 * valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        let num_ascci = valor_exp2.charCodeAt(0);
+                        var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 * num_ascci;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
@@ -556,11 +572,11 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 / valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        let num_ascci = valor_exp2.charCodeAt(0);
+                        var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 / num_ascci;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
@@ -573,11 +589,11 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 / valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        let num_ascci = valor_exp2.charCodeAt(0);
+                        var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 / num_ascci;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
@@ -592,7 +608,7 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 % valor_exp2;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
@@ -605,13 +621,13 @@ class Aritmetica extends Operacion_1.default {
                         return valor_exp1 % valor_exp2;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
                 }
                 else {
-                    controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                    controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                     //reportar error semantico
                     return null;
                 }
@@ -619,32 +635,32 @@ class Aritmetica extends Operacion_1.default {
             case Operacion_1.Operador.POT:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 ** valor_exp2;
+                        return Math.pow(valor_exp1, valor_exp2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 ** valor_exp2;
+                        return Math.pow(valor_exp1, valor_exp2);
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 ** valor_exp2;
+                        return Math.pow(valor_exp1, valor_exp2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 ** valor_exp2;
+                        return Math.pow(valor_exp1, valor_exp2);
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         //reportar error semantico
                         return null;
                     }
                 }
                 else {
-                    controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                    controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                     //reportar error semantico
                     return null;
                 }
@@ -654,7 +670,7 @@ class Aritmetica extends Operacion_1.default {
                     return -valor_expU;
                 }
                 else {
-                    controlador.errores.push(new Errores_1.default("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
+                    controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                     //TODO: reportar error semantico
                     return null;
                 }
@@ -663,9 +679,9 @@ class Aritmetica extends Operacion_1.default {
                 break;
         }
         return null;
-    }
-    recorrer() {
-        let padre = new Nodo_1.default("Exp", "");
+    };
+    Aritmetica.prototype.recorrer = function () {
+        var padre = new Nodo_1.default("Exp", "");
         if (this.expU) { //-1
             padre.AddHijo(new Nodo_1.default(this.signo_operador, ""));
             padre.AddHijo(this.exp1.recorrer());
@@ -676,6 +692,7 @@ class Aritmetica extends Operacion_1.default {
             padre.AddHijo(this.exp2.recorrer());
         }
         return padre;
-    }
-}
+    };
+    return Aritmetica;
+}(Operacion_1.default));
 exports.default = Aritmetica;

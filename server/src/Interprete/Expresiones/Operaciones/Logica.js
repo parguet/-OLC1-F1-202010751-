@@ -1,4 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -26,21 +41,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Errores_1 = __importDefault(require("../../Ast/Errores"));
-const Nodo_1 = __importDefault(require("../../Ast/Nodo"));
-const Tipo_1 = require("../../TablaSimbolos/Tipo");
-const Operacion_1 = __importStar(require("./Operacion"));
-class Logica extends Operacion_1.default {
+var Errores_1 = __importDefault(require("../../Ast/Errores"));
+var Nodo_1 = __importDefault(require("../../Ast/Nodo"));
+var Tipo_1 = require("../../TablaSimbolos/Tipo");
+var Operacion_1 = __importStar(require("./Operacion"));
+var Logica = /** @class */ (function (_super) {
+    __extends(Logica, _super);
     /**
      * @constructor este constructor utiliza el mismo de la clase Operacion
      */
-    constructor(exp1, signo_operador, exp2, linea, columna, expU) {
-        super(exp1, signo_operador, exp2, linea, columna, expU);
+    function Logica(exp1, signo_operador, exp2, linea, columna, expU) {
+        return _super.call(this, exp1, signo_operador, exp2, linea, columna, expU) || this;
     }
-    getTipo(controlador, ts) {
-        let tipo_exp1;
-        let tipo_exp2;
-        let tipo_expU;
+    Logica.prototype.getTipo = function (controlador, ts) {
+        var tipo_exp1;
+        var tipo_exp2;
+        var tipo_expU;
         if (this.expU == false) {
             /** Ejemplo 1
             *  true || flase -> exp1 or exp2 -> exp1 = true, exp2 = false
@@ -126,14 +142,14 @@ class Logica extends Operacion_1.default {
             }
         }
         return Tipo_1.tipo.ERROR;
-    }
-    getValor(controlador, ts) {
-        let valor_exp1;
-        let valor_exp2;
-        let valor_expU;
-        let tipo_exp1;
-        let tipo_exp2;
-        let tipo_expU;
+    };
+    Logica.prototype.getValor = function (controlador, ts) {
+        var valor_exp1;
+        var valor_exp2;
+        var valor_expU;
+        var tipo_exp1;
+        var tipo_exp2;
+        var tipo_expU;
         if (this.expU == false) {
             /**
             *  Ejemplo
@@ -166,16 +182,16 @@ class Logica extends Operacion_1.default {
                         return valor_exp1 && valor_exp2;
                     }
                     else {
-                        let error = new Errores_1.default("Semantico", `Incompatibilidad de tipos, no se puede realizar la operacion logica AND.`, this.linea, this.columna);
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede realizar la operacion logica AND.", this.linea, this.columna);
                         controlador.errores.push(error);
-                        controlador.append(` *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica AND. En la linea ${this.linea} y columna ${this.columna}`);
+                        controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica AND. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                         return null;
                     }
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `Incompatibilidad de tipos, no se puede realizar la operacion logica AND ya que solo se permiten valores booleanos.`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede realizar la operacion logica AND ya que solo se permiten valores booleanos.", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica AND ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica AND ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -185,16 +201,16 @@ class Logica extends Operacion_1.default {
                         return valor_exp1 || valor_exp2;
                     }
                     else {
-                        let error = new Errores_1.default("Semantico", `Incompatibilidad de tipos, no se puede realizar la operacion logica OR.`, this.linea, this.columna);
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede realizar la operacion logica OR.", this.linea, this.columna);
                         controlador.errores.push(error);
-                        controlador.append(` *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica OR. En la linea ${this.linea} y columna ${this.columna}`);
+                        controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica OR. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                         return null;
                     }
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `Incompatibilidad de tipos, no se puede realizar la operacion logica OR ya que solo se permiten valores booleanos.`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede realizar la operacion logica OR ya que solo se permiten valores booleanos.", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica OR ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica OR ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -203,9 +219,9 @@ class Logica extends Operacion_1.default {
                     return !valor_expU;
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano.`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano.", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -220,16 +236,16 @@ class Logica extends Operacion_1.default {
                     }
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar la operacion de casteo int`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar la operacion de casteo int", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
             case Operacion_1.Operador.CASTEODOUBLE:
                 if (tipo_expU == Tipo_1.tipo.CARACTER || tipo_expU == Tipo_1.tipo.ENTERO) {
                     if (tipo_expU == Tipo_1.tipo.CARACTER) {
-                        let temporal = valor_expU.charCodeAt(0);
+                        var temporal = valor_expU.charCodeAt(0);
                         return (temporal);
                     }
                     else {
@@ -237,9 +253,9 @@ class Logica extends Operacion_1.default {
                     }
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar el cateo de double`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar el cateo de double", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -248,9 +264,9 @@ class Logica extends Operacion_1.default {
                     return valor_expU.toString();
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar el casteo de string`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar el casteo de string", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -260,9 +276,9 @@ class Logica extends Operacion_1.default {
                     return String.fromCharCode(valor_expU);
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar la operacion casteo char`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar la operacion casteo char", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -284,16 +300,16 @@ class Logica extends Operacion_1.default {
                         return "String";
                     }
                     else {
-                        let error = new Errores_1.default("Semantico", `No se puede realizar la operacion de obtner tipo`, this.linea, this.columna);
+                        var error = new Errores_1.default("Semantico", "No se puede realizar la operacion de obtner tipo", this.linea, this.columna);
                         controlador.errores.push(error);
-                        controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                        controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                         return null;
                     }
                 }
                 catch (errror) {
-                    let error = new Errores_1.default("Semantico", `No se esperaba este simbolo`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se esperaba este simbolo", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -302,9 +318,9 @@ class Logica extends Operacion_1.default {
                     return valor_expU.toUpperCase();
                 }
                 catch (errror) {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar la operacion UPPER`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar la operacion UPPER", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -313,9 +329,9 @@ class Logica extends Operacion_1.default {
                     return valor_expU.toLowerCase();
                 }
                 catch (errror) {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar la operacion LOWER`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar la operacion LOWER", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
                 break;
@@ -325,9 +341,9 @@ class Logica extends Operacion_1.default {
                     return valor_expU.length;
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano.`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano.", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
             case Operacion_1.Operador.ROUND:
@@ -335,9 +351,9 @@ class Logica extends Operacion_1.default {
                     return Math.round(valor_expU);
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar la operacion round`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar la operacion round", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
             case Operacion_1.Operador.CHARARRAY:
@@ -345,22 +361,22 @@ class Logica extends Operacion_1.default {
                     return Array.from(valor_expU);
                 }
                 else {
-                    let error = new Errores_1.default("Semantico", `No se puede realizar la operacion tocharr array`, this.linea, this.columna);
+                    var error = new Errores_1.default("Semantico", "No se puede realizar la operacion tocharr array", this.linea, this.columna);
                     controlador.errores.push(error);
-                    controlador.append(` *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`);
+                    controlador.append(" *** ERROR: Semantico, No se puede realizar la operacion logica NOT, ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                     return null;
                 }
         }
-    }
-    recorrer() {
+    };
+    Logica.prototype.recorrer = function () {
         //console.log("-----PRIMERO------")
         //console.log(this)
-        let padre = new Nodo_1.default("Condicion", "");
-        let expre1_nodo;
+        var padre = new Nodo_1.default("Condicion", "");
+        var expre1_nodo;
         if (this.exp1 != null) {
             expre1_nodo = this.exp1.recorrer();
         }
-        let expre2_nodo;
+        var expre2_nodo;
         if (this.exp2 != null) {
             expre2_nodo = this.exp2.recorrer();
         }
@@ -410,6 +426,7 @@ class Logica extends Operacion_1.default {
             padre.AddHijo(expre2_nodo);
         }
         return padre;
-    }
-}
+    };
+    return Logica;
+}(Operacion_1.default));
 exports.default = Logica;

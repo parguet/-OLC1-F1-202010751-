@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Operador = void 0;
-const Nodo_1 = __importDefault(require("../../Ast/Nodo"));
+var Nodo_1 = __importDefault(require("../../Ast/Nodo"));
 /**
  * @enum Este sirve para enumerar la lista de operadores que maneja nuestro lenguaje
  */
@@ -41,7 +41,7 @@ var Operador;
 /**
  * @class Clase para el manejo de operaciones del programa
  */
-class Operacion {
+var Operacion = /** @class */ (function () {
     /**
       * @constructor Creamos una nueva operacion
       * @param exp1 expresion izquierda de la operacion
@@ -51,7 +51,7 @@ class Operacion {
       * @param columna columna donde se ubica la operacion
       * @param expU boolean que indica si la operacion es una expresion unaria
       */
-    constructor(exp1, signo_operador, exp2, linea, columna, expU) {
+    function Operacion(exp1, signo_operador, exp2, linea, columna, expU) {
         this.exp1 = exp1;
         this.exp2 = exp2;
         this.columna = columna;
@@ -65,7 +65,7 @@ class Operacion {
      * @param op operador en string
      * @returns retorna un tipo de operador
      */
-    getOperador(signo_operador) {
+    Operacion.prototype.getOperador = function (signo_operador) {
         if (signo_operador == '+') {
             return Operador.SUMA;
         }
@@ -147,23 +147,24 @@ class Operacion {
         else {
             return Operador.X;
         }
-    }
+    };
     /**
      * En esta clase no agregaremos codigo en los metodos de abajo.
      * Ya que esta es la clase padre le heredamos el contructor a las clases que extienden de el
      */
-    getTipo(controlador, ts) {
+    Operacion.prototype.getTipo = function (controlador, ts) {
         throw new Error("Method not implemented.");
-    }
-    getValor(controlador, ts) {
+    };
+    Operacion.prototype.getValor = function (controlador, ts) {
         throw new Error("Method not implemented.");
-    }
-    recorrer() {
-        let padre = new Nodo_1.default("Condicion!", "");
+    };
+    Operacion.prototype.recorrer = function () {
+        var padre = new Nodo_1.default("Condicion!", "");
         //console.log("22222222222222222")
         //console.log(this.exp1.recorrer())
         //console.log(this.exp2.recorrer())
         return padre;
-    }
-}
+    };
+    return Operacion;
+}());
 exports.default = Operacion;
