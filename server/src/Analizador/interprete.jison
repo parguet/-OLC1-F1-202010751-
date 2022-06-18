@@ -348,10 +348,10 @@ DEFAULT : default dospuntos INSTRUCCIONES { $$ = new caso.default(null, $3, @1.f
         ;
 
 FUNCIONES 
-        : id parentesisa LISTA_DE_PARAMETROS parentesisc dospuntos TIPO llavea INSTRUCCIONES llavec { $$ = new funcion.default(2, $6, $1, $3, false, $8,  @1.first_line, @1.last_column); }
-        | id parentesisa parentesisc dospuntos TIPO llavea INSTRUCCIONES llavec               { $$ = new funcion.default(2, $5, $1, [], false, $7,  @1.first_line, @1.last_column); }
-        | id parentesisa LISTA_DE_PARAMETROS parentesisc dospuntos void llavea INSTRUCCIONES llavec   { $$ = new funcion.default(3, $6, $1, $3, true, $8,  @1.first_line, @1.last_column); }
-        | id parentesisa parentesisc dospuntos void llavea INSTRUCCIONES llavec               { $$ = new funcion.default(3, $5, $1, [], true, $7,  @1.first_line, @1.last_column); }
+        : TIPO id parentesisa LISTA_DE_PARAMETROS parentesisc llavea INSTRUCCIONES llavec { $$ = new funcion.default(2, $1, $2, $4, false, $7,  @1.first_line, @1.last_column); }
+        | TIPO id parentesisa parentesisc llavea INSTRUCCIONES llavec               { $$ = new funcion.default(2, $1, $2, [], false, $6,  @1.first_line, @1.last_column); }
+        | void id parentesisa LISTA_DE_PARAMETROS parentesisc llavea INSTRUCCIONES llavec   { $$ = new funcion.default(3, $1, $2, $4, true, $7,  @1.first_line, @1.last_column); }
+        | void id parentesisa parentesisc llavea INSTRUCCIONES llavec               { $$ = new funcion.default(3, $1, $2, [], true, $6,  @1.first_line, @1.last_column); }
         ;
 
 LISTA_DE_PARAMETROS : LISTA_DE_PARAMETROS coma TIPO id          { $$ = $1; $$.push(new simbolo.default(6, $3, $4, null)); }
@@ -362,6 +362,8 @@ LISTA_DE_PARAMETROS : LISTA_DE_PARAMETROS coma TIPO id          { $$ = $1; $$.pu
 
 LLAMADA : id parentesisa LISTA_VALORES parentesisc {$$ = new llamada.default($1, $3,@1.first_line, @1.last_column ); }
         | id parentesisa parentesisc           {$$ = new llamada.default($1, [] ,@1.first_line, @1.last_column ); }
+        | call id parentesisa LISTA_VALORES parentesisc {$$ = new llamada.default($2, $4,@1.first_line, @1.last_column ); }
+        | call id parentesisa parentesisc           {$$ = new llamada.default($2, [] ,@1.first_line, @1.last_column ); }
         ; 
 
 LISTA_VALORES : LISTA_VALORES coma E          { $$ = $1; $$.push($3); }

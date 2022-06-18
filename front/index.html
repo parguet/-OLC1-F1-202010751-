@@ -15,17 +15,18 @@
 
   <body>
     <div class="botones">
-      <a href="http://localhost:8080/ast"  style="width: 150px;" class="btn btn-secondary">Ver Ast</a>
-      <a href="http://localhost:8080/tabla"  style="width: 200px;" class="btn btn-secondary">Tabla de simbolos</a>
-      <a href="http://localhost:8080/errores"  style="width: 150px;" class="btn btn-secondary">Tabla de errores</a>
+      <a href="http://localhost:8080/ast" style="width: 150px;" class="btn btn-secondary">Ver Ast</a>
+      <a href="http://localhost:8080/tabla" style="width: 200px;" class="btn btn-secondary">Tabla de simbolos</a>
+      <a href="http://localhost:8080/errores" style="width: 150px;" class="btn btn-secondary">Tabla de errores</a>
     </div>
 
     <br><br>
     <h2>Cargar Archivo .LF</h2>
     <input type="file" id="archivo">
+    <button id="save">Guardar</button>
     <br><br>
     <textarea id="textArea" name="cadena" rows="18" style="width: 40rem;"></textarea>
-    
+
     <textarea id="textArea2" rows="18" style="width: 40rem;"></textarea>
     <br><br>
     <center>
@@ -71,10 +72,29 @@
         }).then(function (data) {
           document.getElementById('textArea2').value = data.consola;
         });
-        
+
       }
 
+      document.getElementById("save").onclick = function downloadFiles(data, file_name, file_type) {
+        let texto = document.getElementById('textArea').value;
+        var file = new Blob([texto], { type: "lf" });
+        if (window.navigator.msSaveOrOpenBlob)
+          window.navigator.msSaveOrOpenBlob(file, "archivo.lf");
+        else {
+          var a = document.createElement("a"),
+            url = URL.createObjectURL(file);
+          a.href = url;
+          a.download = "archivo.lf";
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function () {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+          }, 0);
+        }
+      }
 
+      
 
 
 
