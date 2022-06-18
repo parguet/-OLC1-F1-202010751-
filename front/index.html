@@ -13,60 +13,72 @@
 
 <div class="bg-success p-2 text-dark bg-opacity-50">
 
-  <body>   
-      <div class="botones">
-        <a href="../acercade/" style="width: 150px;" class="btn btn-secondary">Aceerca de..</a>
-        <a href="../reportes/" style="width: 150px;" class="btn btn-secondary">Reportes</a>
-        <a href="../reproductor/" style="width: 150px;" class="btn btn-secondary">reproductor</a>
-      </div>
+  <body>
+    <div class="botones">
+      <a href="http://localhost:8080/ast"  style="width: 150px;" class="btn btn-secondary">Ver Ast</a>
+      <a href="http://localhost:8080/tabla"  style="width: 200px;" class="btn btn-secondary">Tabla de simbolos</a>
+      <a href="http://localhost:8080/errores"  style="width: 150px;" class="btn btn-secondary">Tabla de errores</a>
+    </div>
+
+    <br><br>
+    <h2>Cargar Archivo .LF</h2>
+    <input type="file" id="archivo">
+    <br><br>
+    <textarea id="textArea" name="cadena" rows="18" style="width: 40rem;"></textarea>
     
-        <br><br>
-      <h2>Cargar Archivo .LF</h2>
-        <input type="file" id="archivo" >
-        <br><br>
-        <textarea id="textArea" name="cadena" rows="18"  style="width: 40rem;"></textarea>
-        <button id="set" (click)='setdata()'>Enviar</button>
-
-      
-      <br><br><br><br><br><br><br><br><br>
+    <textarea id="textArea2" rows="18" style="width: 40rem;"></textarea>
+    <br><br>
+    <center>
+      <button id="set" (click)='setdata()'>Enviar</button>
+    </center>
 
 
-      <script>
-        window.addEventListener('load',() => {
-            document.getElementById('archivo').addEventListener('change',abrirArchivo);
-        });
-        function abrirArchivo(evento){
-            let archivo = evento.target.files[0];
-            if(archivo){
-                let reader=new FileReader();
-                reader.onload = function(e) {
-                    let contenido=e.target.result.toString();
-                    document.getElementById('textArea').innerText = contenido;
-                  };
-                  reader.readAsText(archivo);
-            } else {
-                alert('no se ha seleccionado ningun archivo');
-             }
+
+    <br><br><br><br><br><br><br><br><br>
+
+
+    <script>
+
+
+      document.getElementById('archivo').addEventListener('change', leerArchivo, false);
+      function leerArchivo(e) {
+        var archivo = e.target.files[0];
+        if (!archivo) {
+          return;
         }
+        var lector = new FileReader();
+        lector.onload = function (e) {
+          var contenido = e.target.result;
+          document.getElementById('textArea').textContent = contenido;
+        };
+        lector.readAsText(archivo);
+      }
 
-    
-        document.getElementById("set").onclick=function(){
-            let texto = {texto: document.getElementById('textArea').value};
-            console.log(texto);
-            const textoJson = JSON.stringify(texto);
-            console.log(textoJson);
-            fetch("http://localhost:8080",{
-                method:"POST",
-                headers:{
-                "Content-Type":"application/json",
-            },
-            body: textoJson
+
+
+
+      document.getElementById("set").onclick = function () {
+        let texto = { texto: document.getElementById('textArea').value };
+        const textoJson = JSON.stringify(texto);
+        fetch("http://localhost:8080", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: textoJson
+        }).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          document.getElementById('textArea2').value = data.consola;
         });
-        }
-       
-       
-
         
+      }
+
+
+
+
+
+
     </script>
 
   </body>

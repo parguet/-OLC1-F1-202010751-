@@ -50,8 +50,10 @@ var Nodo = /** @class */ (function () {
         nodoTerm = nodoTerm.replace("\"", "");
         r = "node".concat(i, "[label = \"").concat(nodoTerm, "\"];\n");
         for (var j = 0; j <= nodo.hijos.length - 1; j++) {
-            r = "".concat(r, "node").concat(i, " -> node").concat(i).concat(k, "\n");
-            r = r + this.GraficarNodos(nodo.hijos[j], "" + i + k);
+            var x = j + 1;
+            r = "".concat(r, "node").concat(i, " -> node").concat(i).concat(k).concat(x, "\n");
+            r = r + this.GraficarNodos(nodo.hijos[j], "" + i + k + x);
+            x++;
             k = k + 1;
         }
         if (!(nodo.lexema.match('')) || !(nodo.lexema.match(""))) {

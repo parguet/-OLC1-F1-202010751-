@@ -58,8 +58,10 @@
         r = `node${i}[label = \"${nodoTerm}\"];\n`;
 
         for(let j = 0; j<= nodo.hijos.length - 1; j++){
-            r = `${r}node${i} -> node${i}${k}\n`;
-            r = r + this.GraficarNodos(nodo.hijos[j], ""+i+k);
+            let x = j+1;
+            r = `${r}node${i} -> node${i}${k}${x}\n`;
+            r = r + this.GraficarNodos(nodo.hijos[j], ""+i+k+x);
+            x++;
             k = k + 1;
         }
 

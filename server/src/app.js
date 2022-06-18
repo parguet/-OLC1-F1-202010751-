@@ -7,20 +7,34 @@ var Controlador = require("../src/Interprete/Controlador");
 var TablaSimbolos = require("../src/Interprete/TablaSimbolos/TablaSimbolos");
 
 
-
-
 app.set('port', 8080);
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 const path = require('path');
 
 app.get("/", function (req, res) {
     res.sendFile(path.resolve(__dirname, '../../front/index.html'));
-}   // end of get
-);
+});
+
+app.get("/ast", function (req, res) {
+    res.sendFile(path.resolve(__dirname, '../../front/ast.html'));
+});
+
+app.get("/tabla", function (req, res) {
+    res.sendFile(path.resolve(__dirname, '../../front/tabla.html'));
+});
+app.get("/errores", function (req, res) {
+    res.sendFile(path.resolve(__dirname, '../../front/errores.html'));
+});
+app.get("/ast.png", function (req, res) {
+    res.sendFile(path.resolve(__dirname, '../../front/ast.png'));
+});
+
+
+
 
 
 app.post("/", function (req, res) {
@@ -36,7 +50,7 @@ app.post("/", function (req, res) {
     var ts_html_error = controlador.obtenererrores();
 
 
-    console.log("hola");
+    console.log("consola");
     console.log(controlador.consola);
     //console.log("\n TABLA DE SIMBOLOS\n", ts_html);
     //console.log("\n TABLA DE ERRORES\n", ts_html_error);
@@ -66,7 +80,16 @@ app.post("/", function (req, res) {
     //console.log(variablesError);
     html2(variablesError);
 
-    res.json({ consola: controlador.consola, ts: ts_html, errores: ts_html_error });
+
+
+    let nodo_ast = ast.recorrer();
+    let graphviz = nodo_ast.GraficarSintactico();  //Aqui tenemos la cadena de graphviz para graficar
+    console.log('\n GRAFO \n');
+    console.log(graphviz);
+    grafo(graphviz);
+
+
+    res.json({ consola: controlador.consola});
 }   // end of post
 );
 
@@ -85,6 +108,11 @@ function html1(variables) {
         '</head>' +
         '<body>' +
         '<div class="bg-success p-2 text-dark bg-opacity-50">' +
+        '<div class="botones">'+
+        '<a href="http://localhost:8080/"    style="width: 200px;" class="btn btn-secondary">Volver a Analizador</a>'+
+       '<a href="http://localhost:8080/tabla"  style="width: 200px;" class="btn btn-secondary">Tabla de simbolos</a>'+
+       '<a href="http://localhost:8080/errores"  style="width: 150px;" class="btn btn-secondary">Tabla de errores</a>'+
+      '</div>'+
         '<center>' +
         '<h1>Tabla de Simbolos</h1>' +
         '<br>' +
@@ -138,6 +166,11 @@ function html2(variablesError) {
         '</head>' +
         '<body>' +
         '<div class="bg-success p-2 text-dark bg-opacity-50">' +
+        '<div class="botones">'+
+        '<a href="http://localhost:8080/"    style="width: 200px;" class="btn btn-secondary">Volver a Analizador</a>'+
+       '<a href="http://localhost:8080/tabla"  style="width: 200px;" class="btn btn-secondary">Tabla de simbolos</a>'+
+       '<a href="http://localhost:8080/errores"  style="width: 150px;" class="btn btn-secondary">Tabla de errores</a>'+
+      '</div>'+
         '<center>' +
         '<h1>Errores</h1>' +
         '<br>' +
@@ -157,7 +190,7 @@ function html2(variablesError) {
         html += '<th scope="row">' + (i + 1) + '</th>';
 
         html += '<td>' + variablesError[i][0] + '</td>';
-        html += '<td>' + variablesError[i][1] +" "+ variablesError[i][2] + '</td>';
+        html += '<td>' + variablesError[i][1] + " " + variablesError[i][2] + '</td>';
         html += '<td>' + variablesError[i][3] + '</td>';
         html += '<td>' + variablesError[i][4] + '</td>';
 
@@ -171,6 +204,26 @@ function html2(variablesError) {
     } catch (err) {
         console.error(err)
     }
+}
+
+function grafo(graphviz) {
+    let fs = require('fs')
+    try {
+        let data = fs.writeFileSync('../front/ast.dot', graphviz)
+        //file written successfully
+    } catch (err) {
+        console.error(err)
+    }
+
+
+    var exec = require('child_process').exec, child;
+    child = exec('dot -T png -o ../front/ast.png ../front/ast.dot',
+        function (error, stdout, stderr) {
+            if (error !== null) {
+                console.log('exec error: ' + error);
+            }
+        });
+
 }
 
 

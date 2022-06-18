@@ -1,0 +1,22 @@
+digraph {
+
+node0[label = "INICIO"];
+node0 -> node001
+node001[label = "INSTRUCCION"];
+node001 -> node00101
+node00101[label = "println"];
+node001 -> node00112
+node00112[label = "Primitivo"];
+node00112 -> node0011201
+node0011201[label = "hola"];
+node0 -> node012
+node012[label = "INSTRUCCION"];
+node012 -> node01201
+node01201[label = "println"];
+node012 -> node01212
+node01212[label = "Primitivo"];
+node01212 -> node0121201
+node0121201[label = "popo"];
+ 
+
+}
