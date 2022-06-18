@@ -212,6 +212,12 @@ break;
 case 53:
  this.$ = new Ifs.default($$[$0-6], $$[$0-3], [$$[$0]], _$[$0-8].first_line, _$[$0-8].last_column); 
 break;
+case 54:
+ this.$ = new Ifs.default($$[$0-2], [$$[$0]], [], _$[$0-4].first_line, _$[$0-4].last_column); 
+break;
+case 55: case 56:
+ this.$ = new Ifs.default($$[$0-4], [$$[$0-2]], [$$[$0]], _$[$0-6].first_line, _$[$0-6].last_column); 
+break;
 case 68:
  this.$ = new bloque.default($$[$0-1], _$[$0-2].first_line, _$[$0-2].last_column); 
 break;

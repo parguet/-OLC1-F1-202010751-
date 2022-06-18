@@ -287,9 +287,9 @@ SENTENCIA_IF : if parentesisa E parentesisc llavea INSTRUCCIONES llavec { $$ = n
         | if parentesisa E parentesisc llavea INSTRUCCIONES llavec else SENTENCIA_IF { $$ = new Ifs.default($3, $6, [$9], @1.first_line, @1.last_column); }
         ;
 
-SENTENCIA_IF_SIMPLE : if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE
-                | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else INSTRUCCION_IF_SIMPLE
-                | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else SENTENCIA_IF_SIMPLE
+SENTENCIA_IF_SIMPLE : if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE { $$ = new Ifs.default($3, [$5], [], @1.first_line, @1.last_column); }
+                | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else INSTRUCCION_IF_SIMPLE { $$ = new Ifs.default($3, [$5], [$7], @1.first_line, @1.last_column); }
+                | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else SENTENCIA_IF_SIMPLE  { $$ = new Ifs.default($3, [$5], [$7], @1.first_line, @1.last_column); }
                 ;
 
 INSTRUCCION_IF_SIMPLE : DECLARACION   { $$ =  $1;}
