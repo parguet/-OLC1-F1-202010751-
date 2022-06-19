@@ -28,7 +28,7 @@ export default class Ast implements Instruccion{
 
         //2 da pasada. ejecutar las declaraciones de variables
         for(let instruccion of this.lista_instrucciones){
-            if(instruccion instanceof Declaracion || instruccion instanceof Asignacion){
+            if(instruccion instanceof Declaracion){
             //if(instruccion instanceof Declaracion ){
 
                 instruccion.ejecutar(controlador,ts);

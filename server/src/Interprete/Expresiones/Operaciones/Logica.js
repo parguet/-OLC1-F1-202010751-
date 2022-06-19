@@ -214,6 +214,26 @@ var Logica = /** @class */ (function (_super) {
                     return null;
                 }
                 break;
+            case Operacion_1.Operador.XOR:
+                if (tipo_exp1 == Tipo_1.tipo.BOOLEANO) {
+                    if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
+                        console.log(!!valor_exp1 !== !!valor_exp2);
+                        return !!valor_exp1 !== !!valor_exp2;
+                    }
+                    else {
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede realizar la operacion logica XOR.", this.linea, this.columna);
+                        controlador.errores.push(error);
+                        controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica XOR. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
+                        return null;
+                    }
+                }
+                else {
+                    var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede realizar la operacion logica XOR ya que solo se permiten valores booleanos.", this.linea, this.columna);
+                    controlador.errores.push(error);
+                    controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica XOR ya que solo se permiten valores booleano. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
+                    return null;
+                }
+                break;
             case Operacion_1.Operador.NOT:
                 if (tipo_expU == Tipo_1.tipo.BOOLEANO) {
                     return !valor_expU;

@@ -24,6 +24,7 @@ export enum Operador{
     OR,
     AND,
     NOT,
+    XOR,
     CASTEOINT,
     CASTEODOUBLE,
     CASTEOCHAR,
@@ -82,14 +83,14 @@ export default class Operacion implements Expresion{
             return Operador.SUMA;
         }else if(signo_operador == '-'){
             return Operador.RESTA;
+        }else if(signo_operador == '**'){
+            return Operador.POT;
         }else if(signo_operador == '*'){
             return Operador.MULTIPLICACION;
         }else if(signo_operador == '/'){
             return Operador.DIVISION;
         }else if(signo_operador == 'UNARIO'){
             return Operador.UNARIO;
-        }else if(signo_operador == '^'){
-            return Operador.POT;
         }else if(signo_operador == '%'){
             return Operador.MOD;
         }else if(signo_operador == '<'){
@@ -104,6 +105,8 @@ export default class Operacion implements Expresion{
             return Operador.OR;
         }else if(signo_operador == '&&'){
             return Operador.AND;
+        }else if(signo_operador == '^'){
+            return Operador.XOR;
         }else if(signo_operador == '!'){
             return Operador.NOT;
         }else if(signo_operador == '=='){
@@ -147,10 +150,6 @@ export default class Operacion implements Expresion{
     }
     recorrer(): Nodo {
         let padre = new Nodo("Condicion!","");
-        //console.log("22222222222222222")
-        //console.log(this.exp1.recorrer())
-        //console.log(this.exp2.recorrer())
-
         return padre
 
     }

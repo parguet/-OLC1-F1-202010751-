@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Asignacion_1 = __importDefault(require("../Instrucciones/Asignacion"));
 var Declaracion_1 = __importDefault(require("../Instrucciones/Declaracion"));
 var Funcion_1 = __importDefault(require("../Instrucciones/Funcion"));
 var StartWith_1 = __importDefault(require("../Instrucciones/StartWith"));
@@ -24,7 +23,7 @@ var Ast = /** @class */ (function () {
         //2 da pasada. ejecutar las declaraciones de variables
         for (var _b = 0, _c = this.lista_instrucciones; _b < _c.length; _b++) {
             var instruccion = _c[_b];
-            if (instruccion instanceof Declaracion_1.default || instruccion instanceof Asignacion_1.default) {
+            if (instruccion instanceof Declaracion_1.default) {
                 //if(instruccion instanceof Declaracion ){
                 instruccion.ejecutar(controlador, ts);
             }

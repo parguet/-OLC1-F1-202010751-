@@ -189,6 +189,7 @@ export default class Logica extends Operacion implements Expresion{
             case Operador.OR:
                 if(tipo_exp1 == tipo.BOOLEANO){
                     if(tipo_exp2 == tipo.BOOLEANO ){
+                        
                        return valor_exp1 || valor_exp2;
                     }else{
                         let error = new Errores("Semantico", `Incompatibilidad de tipos, no se puede realizar la operacion logica OR.`, this.linea, this.columna);
@@ -203,6 +204,24 @@ export default class Logica extends Operacion implements Expresion{
                     return null;
                 } 
                 break;
+                case Operador.XOR:
+                    if(tipo_exp1 == tipo.BOOLEANO){
+                        if(tipo_exp2 == tipo.BOOLEANO ){
+                            console.log(!!valor_exp1 !== !!valor_exp2);
+                           return !!valor_exp1 !== !!valor_exp2;
+                        }else{
+                            let error = new Errores("Semantico", `Incompatibilidad de tipos, no se puede realizar la operacion logica XOR.`, this.linea, this.columna);
+                            controlador.errores.push(error);
+                            controlador.append(` *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica XOR. En la linea ${this.linea} y columna ${this.columna}`)
+                            return null;
+                        }
+                    }else{
+                        let error = new Errores("Semantico", `Incompatibilidad de tipos, no se puede realizar la operacion logica XOR ya que solo se permiten valores booleanos.`, this.linea, this.columna);
+                        controlador.errores.push(error);
+                        controlador.append(` *** ERROR: Semantico, Incompatibilidad de tipos, no se puede realizar la operacion logica XOR ya que solo se permiten valores booleano. En la linea ${this.linea} y columna ${this.columna}`)
+                        return null;
+                    } 
+                    break;    
             case Operador.NOT:
                 if(tipo_expU == tipo.BOOLEANO){
                     return !valor_expU; 

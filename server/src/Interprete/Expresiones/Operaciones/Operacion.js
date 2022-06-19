@@ -26,17 +26,18 @@ var Operador;
     Operador[Operador["OR"] = 13] = "OR";
     Operador[Operador["AND"] = 14] = "AND";
     Operador[Operador["NOT"] = 15] = "NOT";
-    Operador[Operador["CASTEOINT"] = 16] = "CASTEOINT";
-    Operador[Operador["CASTEODOUBLE"] = 17] = "CASTEODOUBLE";
-    Operador[Operador["CASTEOCHAR"] = 18] = "CASTEOCHAR";
-    Operador[Operador["CASTEOSTRING"] = 19] = "CASTEOSTRING";
-    Operador[Operador["CASTEOTIPO"] = 20] = "CASTEOTIPO";
-    Operador[Operador["UPPER"] = 21] = "UPPER";
-    Operador[Operador["LOWER"] = 22] = "LOWER";
-    Operador[Operador["LENGHT"] = 23] = "LENGHT";
-    Operador[Operador["ROUND"] = 24] = "ROUND";
-    Operador[Operador["CHARARRAY"] = 25] = "CHARARRAY";
-    Operador[Operador["X"] = 26] = "X";
+    Operador[Operador["XOR"] = 16] = "XOR";
+    Operador[Operador["CASTEOINT"] = 17] = "CASTEOINT";
+    Operador[Operador["CASTEODOUBLE"] = 18] = "CASTEODOUBLE";
+    Operador[Operador["CASTEOCHAR"] = 19] = "CASTEOCHAR";
+    Operador[Operador["CASTEOSTRING"] = 20] = "CASTEOSTRING";
+    Operador[Operador["CASTEOTIPO"] = 21] = "CASTEOTIPO";
+    Operador[Operador["UPPER"] = 22] = "UPPER";
+    Operador[Operador["LOWER"] = 23] = "LOWER";
+    Operador[Operador["LENGHT"] = 24] = "LENGHT";
+    Operador[Operador["ROUND"] = 25] = "ROUND";
+    Operador[Operador["CHARARRAY"] = 26] = "CHARARRAY";
+    Operador[Operador["X"] = 27] = "X";
 })(Operador = exports.Operador || (exports.Operador = {}));
 /**
  * @class Clase para el manejo de operaciones del programa
@@ -72,6 +73,9 @@ var Operacion = /** @class */ (function () {
         else if (signo_operador == '-') {
             return Operador.RESTA;
         }
+        else if (signo_operador == '**') {
+            return Operador.POT;
+        }
         else if (signo_operador == '*') {
             return Operador.MULTIPLICACION;
         }
@@ -80,9 +84,6 @@ var Operacion = /** @class */ (function () {
         }
         else if (signo_operador == 'UNARIO') {
             return Operador.UNARIO;
-        }
-        else if (signo_operador == '^') {
-            return Operador.POT;
         }
         else if (signo_operador == '%') {
             return Operador.MOD;
@@ -104,6 +105,9 @@ var Operacion = /** @class */ (function () {
         }
         else if (signo_operador == '&&') {
             return Operador.AND;
+        }
+        else if (signo_operador == '^') {
+            return Operador.XOR;
         }
         else if (signo_operador == '!') {
             return Operador.NOT;
@@ -160,9 +164,6 @@ var Operacion = /** @class */ (function () {
     };
     Operacion.prototype.recorrer = function () {
         var padre = new Nodo_1.default("Condicion!", "");
-        //console.log("22222222222222222")
-        //console.log(this.exp1.recorrer())
-        //console.log(this.exp2.recorrer())
         return padre;
     };
     return Operacion;

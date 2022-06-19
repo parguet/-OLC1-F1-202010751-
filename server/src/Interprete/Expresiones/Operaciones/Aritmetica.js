@@ -58,17 +58,6 @@ var Aritmetica = /** @class */ (function (_super) {
         var tipo_exp1;
         var tipo_exp2;
         if (this.expU == false) {
-            /** Ejemplo 1
-             *  10 + 30.5 -> exp1 + exp2 -> exp1 = 10, exp2 = 30.5
-             *  exp1.getTipo = ENTERO
-             *  exp2.getTipo = DOBLE
-             *
-             *  Ejemplo 2
-             *  13.4 + 9 - 8 -> exp1 + exp2 -> exp1 = (13.4 + 9), exp2 = 8
-             *  exp1.getTipo = DOBLE
-             *  exp2.getTipo = ENTERO
-             *
-             */
             tipo_exp1 = this.exp1.getTipo(controlador, ts);
             tipo_exp2 = this.exp2.getTipo(controlador, ts);
             if (tipo_exp1 == Tipo_1.tipo.ERROR || tipo_exp2 == Tipo_1.tipo.ERROR) {
@@ -76,28 +65,16 @@ var Aritmetica = /** @class */ (function (_super) {
             }
         }
         else {
-            /* Ejemplo de como trabajamos una expresion Unaria con el booleano expU
-             * 1 + 1 -> expU -> falso
-             * -1 -> expU -> verdadero
-             *
-             * Ejemplo:
-             * -1 -> -exp1 -> exp1 = -1
-             * exp1.getTipo = ENTERO
-             */
             tipo_exp1 = this.exp1.getTipo(controlador, ts);
             if (tipo_exp1 == Tipo_1.tipo.ERROR) {
                 return Tipo_1.tipo.ERROR;
             }
             tipo_exp2 = Tipo_1.tipo.ERROR;
         }
-        /**
-         * Para las siguientes validaciones nos basamos en la tabla de
-         * de las operaciones aritmeticas permitidas que soporta el lenguaje descrito en el enunciado.
-         */
         switch (this.operador) {
             case Operacion_1.Operador.SUMA:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.BOOLEANO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return Tipo_1.tipo.ENTERO;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
@@ -106,37 +83,29 @@ var Aritmetica = /** @class */ (function (_super) {
                     else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
                         return Tipo_1.tipo.CADENA;
                     }
+                    else {
+                        return Tipo_1.tipo.ERROR;
+                    }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.DOBLE || tipo_exp2 == Tipo_1.tipo.BOOLEANO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.DOBLE || tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return Tipo_1.tipo.DOBLE;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return Tipo_1.tipo.CADENA; // 1.2 + "hola" -> "1.2hola"
-                    }
-                }
-                else if (tipo_exp1 == Tipo_1.tipo.BOOLEANO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return Tipo_1.tipo.ENTERO;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return Tipo_1.tipo.DOBLE;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return Tipo_1.tipo.CADENA; // true + "hola" -> "truehola"
+                        return Tipo_1.tipo.CADENA;
                     }
                     else {
                         return Tipo_1.tipo.ERROR;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return Tipo_1.tipo.ENTERO;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
                         return Tipo_1.tipo.DOBLE;
                     }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA || tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
                         return Tipo_1.tipo.CADENA;
                     }
                     else {
@@ -154,7 +123,7 @@ var Aritmetica = /** @class */ (function (_super) {
                 break;
             case Operacion_1.Operador.RESTA:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.BOOLEANO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return Tipo_1.tipo.ENTERO;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
@@ -165,31 +134,19 @@ var Aritmetica = /** @class */ (function (_super) {
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
-                    // console.log("//////AQUIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return Tipo_1.tipo.ENTERO;
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return Tipo_1.tipo.DOBLE;
                     }
                     else {
                         return Tipo_1.tipo.ERROR;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.DOBLE || tipo_exp2 == Tipo_1.tipo.BOOLEANO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.DOBLE || tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return Tipo_1.tipo.DOBLE;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return Tipo_1.tipo.CADENA; // 1.2 + "hola" -> "1.2hola"
-                    }
-                }
-                else if (tipo_exp1 == Tipo_1.tipo.BOOLEANO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return Tipo_1.tipo.ENTERO;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return Tipo_1.tipo.DOBLE;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return Tipo_1.tipo.CADENA; // true + "hola" -> "truehola"
                     }
                     else {
                         return Tipo_1.tipo.ERROR;
@@ -198,33 +155,19 @@ var Aritmetica = /** @class */ (function (_super) {
                 break;
             case Operacion_1.Operador.MULTIPLICACION:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.BOOLEANO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return Tipo_1.tipo.ENTERO;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
                         return Tipo_1.tipo.DOBLE;
                     }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return Tipo_1.tipo.CADENA;
+                    else {
+                        return Tipo_1.tipo.ERROR;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.DOBLE || tipo_exp2 == Tipo_1.tipo.BOOLEANO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return Tipo_1.tipo.DOBLE;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return Tipo_1.tipo.CADENA; // 1.2 + "hola" -> "1.2hola"
-                    }
-                }
-                else if (tipo_exp1 == Tipo_1.tipo.BOOLEANO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return Tipo_1.tipo.ENTERO;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return Tipo_1.tipo.DOBLE;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return Tipo_1.tipo.CADENA; // true + "hola" -> "truehola"
                     }
                     else {
                         return Tipo_1.tipo.ERROR;
@@ -237,16 +180,8 @@ var Aritmetica = /** @class */ (function (_super) {
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
                         return Tipo_1.tipo.DOBLE;
                     }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA || tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        return Tipo_1.tipo.CADENA;
-                    }
-                    else {
-                        return Tipo_1.tipo.ERROR;
-                    }
-                }
-                else if (tipo_exp1 == Tipo_1.tipo.CADENA) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.DOBLE || tipo_exp2 == Tipo_1.tipo.BOOLEANO || tipo_exp2 == Tipo_1.tipo.CARACTER || tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return Tipo_1.tipo.CADENA;
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        return Tipo_1.tipo.ENTERO;
                     }
                     else {
                         return Tipo_1.tipo.ERROR;
@@ -255,13 +190,11 @@ var Aritmetica = /** @class */ (function (_super) {
                 break;
             case Operacion_1.Operador.DIVISION:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.DOBLE || tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                            return Tipo_1.tipo.ENTERO;
-                        }
-                        else {
-                            return Tipo_1.tipo.DOBLE;
-                        }
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        return Tipo_1.tipo.ENTERO;
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return Tipo_1.tipo.DOBLE;
                     }
                     else {
                         return Tipo_1.tipo.ERROR;
@@ -274,27 +207,22 @@ var Aritmetica = /** @class */ (function (_super) {
                     else {
                         return Tipo_1.tipo.ERROR;
                     }
-                } // TODO: Hacer las siguientes validaciones revisando la tabla para DIVISION en el enunciado 
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        return Tipo_1.tipo.ENTERO;
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return Tipo_1.tipo.DOBLE;
+                    }
+                    else {
+                        return Tipo_1.tipo.ERROR;
+                    }
+                }
                 break;
             case Operacion_1.Operador.MOD:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return Tipo_1.tipo.ENTERO;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return Tipo_1.tipo.DOBLE;
-                    }
-                    else {
-                        return Tipo_1.tipo.ERROR;
-                    }
-                } // TODO: Hacer las siguientes validaciones revisando la tabla para MOD en el enunciado 
-                break;
-            case Operacion_1.Operador.POT:
-                if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return Tipo_1.tipo.ENTERO;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER || tipo_exp2 == Tipo_1.tipo.DOBLE) {
                         return Tipo_1.tipo.DOBLE;
                     }
                     else {
@@ -302,16 +230,47 @@ var Aritmetica = /** @class */ (function (_super) {
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return Tipo_1.tipo.DOBLE;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER || tipo_exp2 == Tipo_1.tipo.DOBLE) {
                         return Tipo_1.tipo.DOBLE;
                     }
                     else {
                         return Tipo_1.tipo.ERROR;
                     }
-                } // TODO: Hacer las siguientes validaciones revisando la tabla para POT en el enunciado 
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER || tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return Tipo_1.tipo.DOBLE;
+                    }
+                    else {
+                        return Tipo_1.tipo.ERROR;
+                    }
+                }
+                break;
+            case Operacion_1.Operador.POT:
+                if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER || tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return Tipo_1.tipo.DOBLE;
+                    }
+                    else {
+                        return Tipo_1.tipo.ERROR;
+                    }
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER || tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return Tipo_1.tipo.DOBLE;
+                    }
+                    else {
+                        return Tipo_1.tipo.ERROR;
+                    }
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO || tipo_exp2 == Tipo_1.tipo.CARACTER || tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return Tipo_1.tipo.DOBLE;
+                    }
+                    else {
+                        return Tipo_1.tipo.ERROR;
+                    }
+                }
                 break;
             case Operacion_1.Operador.UNARIO:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
@@ -337,7 +296,6 @@ var Aritmetica = /** @class */ (function (_super) {
         var tipo_exp2;
         var tipo_expU;
         if (this.expU == false) {
-            //Ejemplo si fuera  1 + 2.5 -> exp1 = 1, exp2 = 2.5
             tipo_exp1 = this.exp1.getTipo(controlador, ts); // ENTERO
             tipo_exp2 = this.exp2.getTipo(controlador, ts); // DOBLE 
             tipo_expU = Tipo_1.tipo.ERROR;
@@ -354,21 +312,12 @@ var Aritmetica = /** @class */ (function (_super) {
             case Operacion_1.Operador.SUMA:
                 if (tipo_exp1 === Tipo_1.tipo.ENTERO) {
                     if (tipo_exp2 === Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 + valor_exp2; // 1+2.5 = 3.5
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
                         return valor_exp1 + valor_exp2;
                     }
-                    else if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
-                        // Ejemplo: 1 + true -> 1 + 1 = 2 
-                        var num_del_booleano = 1;
-                        if (valor_exp2 == false) {
-                            num_del_booleano = 0;
-                        }
-                        return valor_exp1 + num_del_booleano;
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return (valor_exp1 + valor_exp2).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        // 1 + 'A' -> 1 + 65 = 66
                         var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 + num_ascci;
                     }
@@ -376,59 +325,30 @@ var Aritmetica = /** @class */ (function (_super) {
                         return valor_exp1 + valor_exp2;
                     }
                     else {
-                        //TODO: reportar error semantico
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
+                        controlador.errores.push(error);
                         return null;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 + valor_exp2; // 1.1 +2.5 = 3.6
+                        console.log("XXXXXXXXXXXXXXXXXXXXX " + valor_exp1 + " " + valor_exp2);
+                        console.log(typeof (valor_exp1) + typeof (valor_exp2));
+                        return (valor_exp1 + valor_exp2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 + valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
-                        // 1 + true -> 1 + 1 = 2 
-                        var num_del_booleano = 1;
-                        if (valor_exp2 == false) {
-                            num_del_booleano = 0;
-                        }
-                        return valor_exp1 + num_del_booleano;
+                        return (valor_exp1 + valor_exp2).toFixed(2); // 1.1 + 2.5 = 3.6
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        // 1.1 + 'A' -> 1.1 + 65 = 66.1
                         var num_ascci = valor_exp2.charCodeAt(0);
-                        return valor_exp1 + num_ascci;
+                        return (valor_exp1 + num_ascci).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
                         return valor_exp1 + valor_exp2;
                     }
                     else {
-                        // 3.4 +  id (id no existe en la tabla de simblos)
-                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error.", this.linea, this.columna);
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
                         controlador.errores.push(error);
-                        controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
-                        return null;
-                    }
-                }
-                else if (tipo_exp1 == Tipo_1.tipo.BOOLEANO) {
-                    // valor_exp1 = true | false
-                    var num_bool_exp1 = 1;
-                    if (valor_exp1 == false) {
-                        num_bool_exp1 = 0;
-                    }
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return num_bool_exp1 + valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return num_bool_exp1 + valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return valor_exp1 + valor_exp2; //true + "hola" -> "truehola"
-                    }
-                    else {
-                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //TODO: reportar error semantico
                         return null;
                     }
                 }
@@ -439,7 +359,7 @@ var Aritmetica = /** @class */ (function (_super) {
                         return num_ascci + valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return num_ascci + valor_exp2;
+                        return (num_ascci + valor_exp2).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return valor_exp1 + valor_exp2; //'A' + 'A' -> AA
@@ -448,8 +368,8 @@ var Aritmetica = /** @class */ (function (_super) {
                         return valor_exp1 + valor_exp2; //'A' + "hola" -> "Ahola"
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //TODO: reportar error semantico
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
+                        controlador.errores.push(error);
                         return null;
                     }
                 }
@@ -458,10 +378,14 @@ var Aritmetica = /** @class */ (function (_super) {
                         return valor_exp1 + valor_exp2;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //TODO: reportar error semantico
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
+                        controlador.errores.push(error);
                         return null;
                     }
+                }
+                else {
+                    controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                    return null;
                 }
                 break;
             case Operacion_1.Operador.RESTA:
@@ -470,22 +394,15 @@ var Aritmetica = /** @class */ (function (_super) {
                         return valor_exp1 - valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 - valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
-                        var num_del_booleano = 1;
-                        if (valor_exp2 == false) {
-                            num_del_booleano = 0;
-                        }
-                        return valor_exp1 - num_del_booleano;
+                        return (valor_exp1 - valor_exp2).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 - num_ascci;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
+                        controlador.errores.push(error);
                         return null;
                     }
                 }
@@ -494,37 +411,40 @@ var Aritmetica = /** @class */ (function (_super) {
                         var num_ascci = valor_exp1.charCodeAt(0);
                         return num_ascci - valor_exp2;
                     }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        var num_ascci = valor_exp1.charCodeAt(0);
+                        return (num_ascci - valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci = valor_exp1.charCodeAt(0);
+                        return num_ascci - valor_exp2;
+                    }
+                    else {
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
+                        controlador.errores.push(error);
+                        return null;
+                    }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 - valor_exp2; // 1.1 +2.5 = 3.6
+                        return (valor_exp1 - valor_exp2).toFixed(2); // 1.1 +2.5 = 3.6
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 - valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.BOOLEANO) {
-                        // 1 + true -> 1 + 1 = 2 
-                        var num_del_booleano = 1;
-                        if (valor_exp2 == false) {
-                            num_del_booleano = 0;
-                        }
-                        return valor_exp1 - num_del_booleano;
+                        return (valor_exp1 - valor_exp2).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        // 1.1 + 'A' -> 1.1 + 65 = 66.1
                         var num_ascci = valor_exp2.charCodeAt(0);
-                        return valor_exp1 - num_ascci;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
-                        return valor_exp1 - valor_exp2;
+                        return (valor_exp1 - num_ascci).toFixed(2);
                     }
                     else {
-                        // 3.4 +  id (id no existe en la tabla de simblos)
-                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error.", this.linea, this.columna);
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
                         controlador.errores.push(error);
-                        controlador.append(" *** ERROR: Semantico, Incompatibilidad de tipos, no se puede operar la SUMA porque se produjo un error. En la linea ".concat(this.linea, " y columna ").concat(this.columna));
                         return null;
                     }
+                }
+                else {
+                    controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                    return null;
                 }
                 break;
             case Operacion_1.Operador.MULTIPLICACION:
@@ -533,135 +453,221 @@ var Aritmetica = /** @class */ (function (_super) {
                         return valor_exp1 * valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 * valor_exp2;
+                        return (valor_exp1 * valor_exp2).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 * num_ascci;
                     }
                     else {
-                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
+                        var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
+                        controlador.errores.push(error);
                         return null;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 * valor_exp2;
+                        return (valor_exp1 * valor_exp2).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 * valor_exp2;
+                        return (valor_exp1 * valor_exp2).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
-                        return valor_exp1 * num_ascci;
+                        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA   <>" + typeof (valor_exp1) + "<>" + typeof (num_ascci));
+                        return (valor_exp1 * num_ascci).toFixed(2);
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
-                        return null;
-                    }
-                } // TODO: Hacer las siguientes validaciones revisando la tabla para MULTIPLICACION en el enunciado 
-                break;
-            case Operacion_1.Operador.DIVISION:
-                if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 / valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 / valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        var num_ascci = valor_exp2.charCodeAt(0);
-                        return valor_exp1 / num_ascci;
-                    }
-                    else {
-                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
                         return null;
                     }
                 }
-                else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
+                else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
+                    var num_ascci1 = valor_exp1.charCodeAt(0);
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 / valor_exp2;
+                        return num_ascci1 * valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 / valor_exp2;
+                        return (num_ascci1 * valor_exp2).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
-                        var num_ascci = valor_exp2.charCodeAt(0);
-                        return valor_exp1 / num_ascci;
+                        var num_ascci2 = valor_exp2.charCodeAt(0);
+                        return (num_ascci1 * num_ascci2).toFixed(2);
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
-                        return null;
-                    }
-                } // TODO: Hacer las siguientes validaciones revisando la tabla para DIVISION en el enunciado 
-                break;
-            case Operacion_1.Operador.MOD:
-                if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 % valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 % valor_exp2;
-                    }
-                    else {
-                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
-                        return null;
-                    }
-                }
-                else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
-                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return valor_exp1 % valor_exp2;
-                    }
-                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return valor_exp1 % valor_exp2;
-                    }
-                    else {
-                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
                         return null;
                     }
                 }
                 else {
                     controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                    //reportar error semantico
+                    return null;
+                }
+                break;
+            case Operacion_1.Operador.DIVISION:
+                if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                        return Math.trunc(valor_exp1 / valor_exp2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD   <>" + typeof (valor_exp1) + " " + typeof (valor_exp2) + " " + valor_exp1 + " " + valor_exp2);
+                        return (valor_exp1 / valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci = valor_exp2.charCodeAt(0);
+                        return Math.trunc(valor_exp1 / num_ascci);
+                    }
+                    else {
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                        //reportar error semantico
+                        return null;
+                    }
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                        return (valor_exp1 / valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return (valor_exp1 / valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci = valor_exp2.charCodeAt(0);
+                        return (valor_exp1 / num_ascci).toFixed(2);
+                    }
+                    else {
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                        return null;
+                    }
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
+                    var num_ascci1 = valor_exp1.charCodeAt(0);
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                        return Math.trunc(num_ascci1 / valor_exp2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return (num_ascci1 / valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci2 = valor_exp2.charCodeAt(0);
+                        return Math.trunc(num_ascci1 / num_ascci2);
+                    }
+                    else {
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                        return null;
+                    }
+                }
+                else {
+                    controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                    return null;
+                }
+                break;
+            case Operacion_1.Operador.MOD:
+                if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                        return (valor_exp1 % valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return (valor_exp1 % valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci2 = valor_exp2.charCodeAt(0);
+                        return (valor_exp1 % num_ascci2).toFixed(2);
+                    }
+                    else {
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                        return null;
+                    }
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                        return (valor_exp1 % valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return (valor_exp1 % valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci2 = valor_exp2.charCodeAt(0);
+                        return (valor_exp1 % num_ascci2).toFixed(2);
+                    }
+                    else {
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                        return null;
+                    }
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
+                    var num_ascci1 = valor_exp1.charCodeAt(0);
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                        return (num_ascci1 % valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return (num_ascci1 % valor_exp2).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci2 = valor_exp2.charCodeAt(0);
+                        return (num_ascci1 % num_ascci2).toFixed(2);
+                    }
+                    else {
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
+                        return null;
+                    }
+                }
+                else {
+                    controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                     return null;
                 }
                 break;
             case Operacion_1.Operador.POT:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return Math.pow(valor_exp1, valor_exp2);
+                        return (Math.pow(valor_exp1, valor_exp2)).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return Math.pow(valor_exp1, valor_exp2);
+                        return (Math.pow(valor_exp1, valor_exp2)).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci2 = valor_exp2.charCodeAt(0);
+                        return (Math.pow(valor_exp1, num_ascci2)).toFixed(2);
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
                         return null;
                     }
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return Math.pow(valor_exp1, valor_exp2);
+                        return (Math.pow(valor_exp1, valor_exp2)).toFixed(2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return Math.pow(valor_exp1, valor_exp2);
+                        return (Math.pow(valor_exp1, valor_exp2)).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci2 = valor_exp2.charCodeAt(0);
+                        return (Math.pow(valor_exp1, num_ascci2)).toFixed(2);
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                        //reportar error semantico
+                        return null;
+                    }
+                }
+                else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
+                    var num_ascci1 = valor_exp1.charCodeAt(0);
+                    if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
+                        return (Math.pow(num_ascci1, valor_exp2)).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
+                        return (Math.pow(num_ascci1, valor_exp2)).toFixed(2);
+                    }
+                    else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
+                        var num_ascci2 = valor_exp2.charCodeAt(0);
+                        return (Math.pow(num_ascci1, num_ascci2)).toFixed(2);
+                    }
+                    else {
+                        controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
                         return null;
                     }
                 }
                 else {
                     controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                    //reportar error semantico
                     return null;
                 }
                 break;
@@ -671,7 +677,6 @@ var Aritmetica = /** @class */ (function (_super) {
                 }
                 else {
                     controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
-                    //TODO: reportar error semantico
                     return null;
                 }
                 break;

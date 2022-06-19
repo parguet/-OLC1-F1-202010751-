@@ -192,6 +192,7 @@ caracter        \'[^\']*\'
 %right 'interrogacion'
 %left 'or'
 %left 'and'
+%left 'xor'
 %right 'not' 'casteodouble' 'casteoint' 'casteostring' 'casteochar' 'casteotipo' 'casteotolower' 'casteotoupper' 'length' 'round'
 %left 'dobleigual' 'diferente' 'menorque' 'menorigual' 'mayorque' 'mayorigual'
 %left 'mas' 'menos'
@@ -299,6 +300,8 @@ INSTRUCCION_IF_SIMPLE : DECLARACION   { $$ =  $1;}
             | break puntocoma     { $$ = new detener.default(); }
             | id decremento puntocoma  { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
             | id incremento puntocoma { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+            | decremento id puntocoma  { $$ = new asignacion.default($2, new aritmetica.default(new identificador.default($2, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+            | incremento id puntocoma { $$ = new asignacion.default($2, new aritmetica.default(new identificador.default($2, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
             | continue puntocoma  { $$ = new continuar.default(); }
             | LLAMADA puntocoma   { $$ = $1; } 
             | return puntocoma        { $$ = new retorno.default(null); } 
@@ -379,9 +382,9 @@ LLAMADEEE : id parentesisa LISTA_VALORES parentesisc {$$ = new llamada.default($
 
 E : E mas E         { $$ = new aritmetica.default($1, '+', $3, @1.first_line, @1.last_column,false); }
     | E menos E      { $$ = new aritmetica.default($1, '-', $3, @1.first_line, @1.last_column,false); }
+    | E potencia E        { $$ = new aritmetica.default($1, '**', $3, @1.first_line, @1.last_column,false); }
     | E multiplicacion E      { $$ = new aritmetica.default($1, '*', $3, @1.first_line, @1.last_column,false); }
     | E division E        { $$ = new aritmetica.default($1, '/', $3, @1.first_line, @1.last_column,false); }
-    | E potencia E        { $$ = new aritmetica.default($1, '^', $3, @1.first_line, @1.last_column,false); }
     | E modulo E        { $$ = new aritmetica.default($1, '%', $3, @1.first_line, @1.last_column,false); }
     | E mayorigual E  { $$ = new relacional.default($1, '>=', $3, @1.first_line, @1.last_column,false); }
     | E mayorque E   { $$ = new relacional.default($1, '>', $3, @1.first_line, @1.last_column,false); }
@@ -391,6 +394,7 @@ E : E mas E         { $$ = new aritmetica.default($1, '+', $3, @1.first_line, @1
     | E diferente E  { $$ = new relacional.default($1, '!=', $3, @1.first_line, @1.last_column,false); }
     | E and E       { $$ = new logica.default($1, '&&', $3, @1.first_line, @1.last_column,false); }
     | E or E       { $$ = new logica.default($1, '||', $3, @1.first_line, @1.last_column,false); }
+    | E xor E       { $$ = new logica.default($1, '^', $3, @1.first_line, @1.last_column,false); }
     | not E          { $$ = new logica.default($2, '!', null, @1.first_line, @1.last_column,true); }
     | casteodouble E     { $$ = new logica.default($2, '(double)', null, @1.first_line, @1.last_column,true); }
     | casteoint E  { $$ = new logica.default($2, '(int)', null, @1.first_line, @1.last_column,true); }
@@ -416,6 +420,8 @@ E : E mas E         { $$ = new aritmetica.default($1, '+', $3, @1.first_line, @1
     | E interrogacion E dospuntos E { $$ = new ternario.default($1, $3, $5, @1.first_line, @1.last_column); }
     | id incremento          { $$ = new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
     | id decremento          { $$ = new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
+    | incremento id           { $$ = new aritmetica.default(new identificador.default($2, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
+    | decremento id           { $$ = new aritmetica.default(new identificador.default($2, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false); }
     | LLAMADA           { $$ = $1; } 
 
 
