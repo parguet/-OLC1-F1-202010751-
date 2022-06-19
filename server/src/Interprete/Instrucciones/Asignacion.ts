@@ -8,6 +8,7 @@ import { tipo } from "../TablaSimbolos/Tipo";
 
 export default class Asignacion implements Instruccion{
 
+    
     public identificador : string;
     public valor : Expresion;
     public linea : number;

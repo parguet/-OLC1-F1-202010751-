@@ -233,13 +233,13 @@ export default class Aritmetica extends Operacion implements Expresion{
        
         if(this.expU == false){
             
-            tipo_exp1 = this.exp1.getTipo(controlador,ts); // ENTERO
-            tipo_exp2 = this.exp2.getTipo(controlador,ts); // DOBLE 
+            tipo_exp1 = this.exp1.getTipo(controlador,ts); 
+            tipo_exp2 = this.exp2.getTipo(controlador,ts);  
             
             tipo_expU = tipo.ERROR;
 
-            valor_exp1 = this.exp1.getValor(controlador,ts); // 1 
-            valor_exp2 = this.exp2.getValor(controlador,ts); // 2.5
+            valor_exp1 = this.exp1.getValor(controlador,ts);  
+            valor_exp2 = this.exp2.getValor(controlador,ts); 
 
         }else{
             tipo_expU = this.exp1.getTipo(controlador,ts);
@@ -256,7 +256,7 @@ export default class Aritmetica extends Operacion implements Expresion{
                     if(tipo_exp2 === tipo.ENTERO){
                         return valor_exp1 + valor_exp2;
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 + valor_exp2).toFixed(2);
+                        return  parseFloat((valor_exp1 + valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 + num_ascci;
@@ -273,10 +273,10 @@ export default class Aritmetica extends Operacion implements Expresion{
                         console.log(typeof(valor_exp1) + typeof(valor_exp2));
                         return (valor_exp1 + valor_exp2); 
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 + valor_exp2).toFixed(2); // 1.1 + 2.5 = 3.6
+                        return parseFloat((valor_exp1 + valor_exp2).toFixed(2)); 
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp2.charCodeAt(0);
-                        return( valor_exp1 + num_ascci).toFixed(2);
+                        return parseFloat(( valor_exp1 + num_ascci).toFixed(2));
                     }else if(tipo_exp2 == tipo.CADENA){
                         return valor_exp1 + valor_exp2;
                     }else{
@@ -290,7 +290,7 @@ export default class Aritmetica extends Operacion implements Expresion{
                     if(tipo_exp2 == tipo.ENTERO){
                         return num_ascci + valor_exp2; 
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (num_ascci + valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci + valor_exp2).toFixed(2)) ;
                     }else if(tipo_exp2 == tipo.CARACTER){
                         return valor_exp1 + valor_exp2; //'A' + 'A' -> AA
                     }else if(tipo_exp2 == tipo.CADENA){
@@ -318,7 +318,7 @@ export default class Aritmetica extends Operacion implements Expresion{
                     if(tipo_exp2 == tipo.ENTERO){
                         return valor_exp1 - valor_exp2;
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 - valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 - valor_exp2).toFixed(2)) ;
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 - num_ascci;
@@ -333,7 +333,7 @@ export default class Aritmetica extends Operacion implements Expresion{
                         return num_ascci - valor_exp2;
                     }else if(tipo_exp2 == tipo.DOBLE){
                         let num_ascci = valor_exp1.charCodeAt(0);
-                        return (num_ascci - valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci - valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp1.charCodeAt(0);
                         return num_ascci - valor_exp2;
@@ -344,12 +344,12 @@ export default class Aritmetica extends Operacion implements Expresion{
                     }
                 }else if(tipo_exp1 == tipo.DOBLE){
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (valor_exp1 - valor_exp2).toFixed(2); // 1.1 +2.5 = 3.6
+                        return parseFloat((valor_exp1 - valor_exp2).toFixed(2)) ; 
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 - valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 - valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 - num_ascci).toFixed(2);
+                        return parseFloat( (valor_exp1 - num_ascci).toFixed(2));
                     }else{
                         let error = new Errores("Semantico", `Incompatibilidad de tipos.`, this.linea, this.columna);
                         controlador.errores.push(error);
@@ -365,7 +365,7 @@ export default class Aritmetica extends Operacion implements Expresion{
                     if(tipo_exp2 == tipo.ENTERO){
                         return valor_exp1 * valor_exp2;
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 * valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 * valor_exp2).toFixed(2)) ;
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp2.charCodeAt(0);
                         return valor_exp1 * num_ascci;
@@ -376,13 +376,13 @@ export default class Aritmetica extends Operacion implements Expresion{
                     }
                 }else if(tipo_exp1 == tipo.DOBLE){
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (valor_exp1 * valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 * valor_exp2).toFixed(2)) ;
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 * valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 * valor_exp2).toFixed(2)) ;
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp2.charCodeAt(0);
                         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA   <>"+typeof(valor_exp1)+"<>"+typeof(num_ascci));
-                        return (valor_exp1 * num_ascci).toFixed(2);
+                        return  parseFloat((valor_exp1 * num_ascci).toFixed(2));
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;
@@ -392,10 +392,10 @@ export default class Aritmetica extends Operacion implements Expresion{
                     if(tipo_exp2 == tipo.ENTERO){
                         return num_ascci1 * valor_exp2;
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (num_ascci1 * valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 * valor_exp2).toFixed(2)) ;
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (num_ascci1 * num_ascci2).toFixed(2);
+                        return parseFloat((num_ascci1 * num_ascci2).toFixed(2));
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;
@@ -411,7 +411,7 @@ export default class Aritmetica extends Operacion implements Expresion{
                         return Math.trunc(valor_exp1 / valor_exp2);
                     }else if(tipo_exp2 == tipo.DOBLE){
                         console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD   <>"+typeof(valor_exp1)+ " "+typeof(valor_exp2)+ " "+valor_exp1+" "+valor_exp2);
-                        return (valor_exp1 / valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 / valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp2.charCodeAt(0);
                         return Math.trunc(valor_exp1 / num_ascci);
@@ -422,12 +422,12 @@ export default class Aritmetica extends Operacion implements Expresion{
                     }
                 }else if(tipo_exp1 == tipo.DOBLE){
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (valor_exp1 / valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 / valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 / valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 / valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 / num_ascci).toFixed(2);
+                        return parseFloat((valor_exp1 / num_ascci).toFixed(2));
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;
@@ -437,7 +437,7 @@ export default class Aritmetica extends Operacion implements Expresion{
                     if(tipo_exp2 == tipo.ENTERO){
                         return Math.trunc(num_ascci1 / valor_exp2);
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (num_ascci1 / valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 / valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci2 = valor_exp2.charCodeAt(0);
                         return Math.trunc(num_ascci1 / num_ascci2);
@@ -452,24 +452,24 @@ export default class Aritmetica extends Operacion implements Expresion{
             case Operador.MOD:
                 if(tipo_exp1 == tipo.ENTERO){
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (valor_exp1 % valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 % valor_exp2).toFixed(2)) ;
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 % valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 % valor_exp2).toFixed(2)) ;
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 % num_ascci2).toFixed(2);
+                        return parseFloat((valor_exp1 % num_ascci2).toFixed(2)) ;
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;
                     }
                 }else if(tipo_exp1 == tipo.DOBLE){
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (valor_exp1 % valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 % valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 % valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 % valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 % num_ascci2).toFixed(2);
+                        return parseFloat((valor_exp1 % num_ascci2).toFixed(2));
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;
@@ -477,12 +477,12 @@ export default class Aritmetica extends Operacion implements Expresion{
                 }else if(tipo_exp1 == tipo.CARACTER){
                     let num_ascci1 = valor_exp1.charCodeAt(0);
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (num_ascci1 % valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 % valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (num_ascci1 % valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 % valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (num_ascci1 % num_ascci2).toFixed(2);
+                        return parseFloat((num_ascci1 % num_ascci2).toFixed(2));
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;
@@ -495,24 +495,24 @@ export default class Aritmetica extends Operacion implements Expresion{
             case Operador.POT:
                 if(tipo_exp1 == tipo.ENTERO){
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (valor_exp1 ** valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 ** valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 ** valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 ** valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 ** num_ascci2).toFixed(2);
+                        return parseFloat((valor_exp1 ** num_ascci2).toFixed(2));
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;
                     }
                 }else if(tipo_exp1 == tipo.DOBLE){
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (valor_exp1 ** valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 ** valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (valor_exp1 ** valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 ** valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 ** num_ascci2).toFixed(2);
+                        return parseFloat((valor_exp1 ** num_ascci2).toFixed(2));
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;
@@ -520,12 +520,12 @@ export default class Aritmetica extends Operacion implements Expresion{
                 }else if(tipo_exp1 == tipo.CARACTER){
                     let num_ascci1 = valor_exp1.charCodeAt(0);
                     if(tipo_exp2 == tipo.ENTERO){
-                        return (num_ascci1 ** valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 ** valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.DOBLE){
-                        return (num_ascci1 ** valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 ** valor_exp2).toFixed(2));
                     }else if(tipo_exp2 == tipo.CARACTER){
                         let num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (num_ascci1 ** num_ascci2).toFixed(2);
+                        return parseFloat((num_ascci1 ** num_ascci2).toFixed(2));
                     }else{
                         controlador.errores.push(new Errores("Semantico", `Incompatibilidad de tipos`, this.linea, this.columna));
                         return null;

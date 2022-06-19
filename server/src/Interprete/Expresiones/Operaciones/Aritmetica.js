@@ -296,11 +296,11 @@ var Aritmetica = /** @class */ (function (_super) {
         var tipo_exp2;
         var tipo_expU;
         if (this.expU == false) {
-            tipo_exp1 = this.exp1.getTipo(controlador, ts); // ENTERO
-            tipo_exp2 = this.exp2.getTipo(controlador, ts); // DOBLE 
+            tipo_exp1 = this.exp1.getTipo(controlador, ts);
+            tipo_exp2 = this.exp2.getTipo(controlador, ts);
             tipo_expU = Tipo_1.tipo.ERROR;
-            valor_exp1 = this.exp1.getValor(controlador, ts); // 1 
-            valor_exp2 = this.exp2.getValor(controlador, ts); // 2.5
+            valor_exp1 = this.exp1.getValor(controlador, ts);
+            valor_exp2 = this.exp2.getValor(controlador, ts);
         }
         else {
             tipo_expU = this.exp1.getTipo(controlador, ts);
@@ -315,7 +315,7 @@ var Aritmetica = /** @class */ (function (_super) {
                         return valor_exp1 + valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 + valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 + valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
@@ -337,11 +337,11 @@ var Aritmetica = /** @class */ (function (_super) {
                         return (valor_exp1 + valor_exp2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 + valor_exp2).toFixed(2); // 1.1 + 2.5 = 3.6
+                        return parseFloat((valor_exp1 + valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 + num_ascci).toFixed(2);
+                        return parseFloat((valor_exp1 + num_ascci).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CADENA) {
                         return valor_exp1 + valor_exp2;
@@ -359,7 +359,7 @@ var Aritmetica = /** @class */ (function (_super) {
                         return num_ascci + valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (num_ascci + valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci + valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         return valor_exp1 + valor_exp2; //'A' + 'A' -> AA
@@ -394,7 +394,7 @@ var Aritmetica = /** @class */ (function (_super) {
                         return valor_exp1 - valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 - valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 - valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
@@ -413,7 +413,7 @@ var Aritmetica = /** @class */ (function (_super) {
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
                         var num_ascci = valor_exp1.charCodeAt(0);
-                        return (num_ascci - valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci - valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp1.charCodeAt(0);
@@ -427,14 +427,14 @@ var Aritmetica = /** @class */ (function (_super) {
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (valor_exp1 - valor_exp2).toFixed(2); // 1.1 +2.5 = 3.6
+                        return parseFloat((valor_exp1 - valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 - valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 - valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 - num_ascci).toFixed(2);
+                        return parseFloat((valor_exp1 - num_ascci).toFixed(2));
                     }
                     else {
                         var error = new Errores_1.default("Semantico", "Incompatibilidad de tipos.", this.linea, this.columna);
@@ -453,7 +453,7 @@ var Aritmetica = /** @class */ (function (_super) {
                         return valor_exp1 * valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 * valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 * valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
@@ -467,15 +467,15 @@ var Aritmetica = /** @class */ (function (_super) {
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (valor_exp1 * valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 * valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 * valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 * valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
                         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA   <>" + typeof (valor_exp1) + "<>" + typeof (num_ascci));
-                        return (valor_exp1 * num_ascci).toFixed(2);
+                        return parseFloat((valor_exp1 * num_ascci).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
@@ -488,11 +488,11 @@ var Aritmetica = /** @class */ (function (_super) {
                         return num_ascci1 * valor_exp2;
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (num_ascci1 * valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 * valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (num_ascci1 * num_ascci2).toFixed(2);
+                        return parseFloat((num_ascci1 * num_ascci2).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
@@ -511,7 +511,7 @@ var Aritmetica = /** @class */ (function (_super) {
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
                         console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD   <>" + typeof (valor_exp1) + " " + typeof (valor_exp2) + " " + valor_exp1 + " " + valor_exp2);
-                        return (valor_exp1 / valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 / valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
@@ -525,14 +525,14 @@ var Aritmetica = /** @class */ (function (_super) {
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (valor_exp1 / valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 / valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 / valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 / valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 / num_ascci).toFixed(2);
+                        return parseFloat((valor_exp1 / num_ascci).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
@@ -545,7 +545,7 @@ var Aritmetica = /** @class */ (function (_super) {
                         return Math.trunc(num_ascci1 / valor_exp2);
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (num_ascci1 / valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 / valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci2 = valor_exp2.charCodeAt(0);
@@ -564,14 +564,14 @@ var Aritmetica = /** @class */ (function (_super) {
             case Operacion_1.Operador.MOD:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (valor_exp1 % valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 % valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 % valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 % valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 % num_ascci2).toFixed(2);
+                        return parseFloat((valor_exp1 % num_ascci2).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
@@ -580,14 +580,14 @@ var Aritmetica = /** @class */ (function (_super) {
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (valor_exp1 % valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 % valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (valor_exp1 % valor_exp2).toFixed(2);
+                        return parseFloat((valor_exp1 % valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (valor_exp1 % num_ascci2).toFixed(2);
+                        return parseFloat((valor_exp1 % num_ascci2).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
@@ -597,14 +597,14 @@ var Aritmetica = /** @class */ (function (_super) {
                 else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
                     var num_ascci1 = valor_exp1.charCodeAt(0);
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (num_ascci1 % valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 % valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (num_ascci1 % valor_exp2).toFixed(2);
+                        return parseFloat((num_ascci1 % valor_exp2).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (num_ascci1 % num_ascci2).toFixed(2);
+                        return parseFloat((num_ascci1 % num_ascci2).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
@@ -619,14 +619,14 @@ var Aritmetica = /** @class */ (function (_super) {
             case Operacion_1.Operador.POT:
                 if (tipo_exp1 == Tipo_1.tipo.ENTERO) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (Math.pow(valor_exp1, valor_exp2)).toFixed(2);
+                        return parseFloat((Math.pow(valor_exp1, valor_exp2)).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (Math.pow(valor_exp1, valor_exp2)).toFixed(2);
+                        return parseFloat((Math.pow(valor_exp1, valor_exp2)).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (Math.pow(valor_exp1, num_ascci2)).toFixed(2);
+                        return parseFloat((Math.pow(valor_exp1, num_ascci2)).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
@@ -635,14 +635,14 @@ var Aritmetica = /** @class */ (function (_super) {
                 }
                 else if (tipo_exp1 == Tipo_1.tipo.DOBLE) {
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (Math.pow(valor_exp1, valor_exp2)).toFixed(2);
+                        return parseFloat((Math.pow(valor_exp1, valor_exp2)).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (Math.pow(valor_exp1, valor_exp2)).toFixed(2);
+                        return parseFloat((Math.pow(valor_exp1, valor_exp2)).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (Math.pow(valor_exp1, num_ascci2)).toFixed(2);
+                        return parseFloat((Math.pow(valor_exp1, num_ascci2)).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
@@ -652,14 +652,14 @@ var Aritmetica = /** @class */ (function (_super) {
                 else if (tipo_exp1 == Tipo_1.tipo.CARACTER) {
                     var num_ascci1 = valor_exp1.charCodeAt(0);
                     if (tipo_exp2 == Tipo_1.tipo.ENTERO) {
-                        return (Math.pow(num_ascci1, valor_exp2)).toFixed(2);
+                        return parseFloat((Math.pow(num_ascci1, valor_exp2)).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.DOBLE) {
-                        return (Math.pow(num_ascci1, valor_exp2)).toFixed(2);
+                        return parseFloat((Math.pow(num_ascci1, valor_exp2)).toFixed(2));
                     }
                     else if (tipo_exp2 == Tipo_1.tipo.CARACTER) {
                         var num_ascci2 = valor_exp2.charCodeAt(0);
-                        return (Math.pow(num_ascci1, num_ascci2)).toFixed(2);
+                        return parseFloat((Math.pow(num_ascci1, num_ascci2)).toFixed(2));
                     }
                     else {
                         controlador.errores.push(new Errores_1.default("Semantico", "Incompatibilidad de tipos", this.linea, this.columna));
