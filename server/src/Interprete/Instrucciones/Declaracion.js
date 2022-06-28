@@ -9,7 +9,7 @@ var Primitivo_1 = __importDefault(require("../Expresiones/Primitivo"));
 var Simbolo_1 = __importDefault(require("../TablaSimbolos/Simbolo"));
 var Tipo_1 = require("../TablaSimbolos/Tipo");
 var Declaracion = /** @class */ (function () {
-    function Declaracion(type, lista_ids, expresion, linea, columna, typeArray, E1, E2, Array, constante) {
+    function Declaracion(type, lista_ids, expresion, linea, columna, typeArray, E1, E2, E11, E22, Array, constante) {
         this.type = type;
         this.lista_ids = lista_ids;
         this.expresion = expresion;
@@ -17,6 +17,8 @@ var Declaracion = /** @class */ (function () {
         this.columna = columna;
         this.E1 = E1;
         this.E2 = E2;
+        this.E11 = E11;
+        this.E22 = E22;
         this.typeArray = typeArray;
         this.Array = Array;
         this.constante = constante;
@@ -31,13 +33,12 @@ var Declaracion = /** @class */ (function () {
             if (ts.existeEnActual(id)) {
                 var error = new Errores_1.default("Semantico", "La variable ".concat(id, " ya existe en el entorno actual, por lo que no se puede declarar."), this.linea, this.columna);
                 controlador.errores.push(error);
-                controlador.append(" *** ERROR: Semantico, La variable ".concat(id, " ya existe en el entorno actual, por lo que no se puede declarar. En la linea ").concat(this.linea, " y columna ").concat(this.columna));
                 continue;
             }
             //console.log(this)
             //console.log("----------------------------")
             //console.log( this.type.enum_tipo);
-            if (this.E1 == null) {
+            if (this.E1 == null && this.E11 == null) {
                 if (this.expresion != null) {
                     var tipo_valor = this.expresion.getTipo(controlador, ts); //ENTERO
                     var valor = this.expresion.getValor(controlador, ts); //0
@@ -86,42 +87,74 @@ var Declaracion = /** @class */ (function () {
                 }
             }
             else {
-                if (this.E2 == null) {
-                    var tipo_valor = this.E1.getTipo(controlador, ts); //ENTERO
-                    var valor = this.E1.getValor(controlador, ts); //0
+                if (this.E2 == null && this.E22 == null) {
+                    //let tipo_valor = this.E1.getTipo(controlador, ts); //ENTERO
+                    //let valor = this.E1.getValor(controlador,ts); //0
                     // console.log(this)
                     //console.log("----------------------------")
                     //console.log( this.type.enum_tipo);
                     //console.log(tipo_valor);
                     //console.log(valor);
                     //console.log(new Array(valor));
-                    var valores = new Array(valor);
-                    var nuevo_simbolo = new Simbolo_1.default(4, this.type, id, valores, this.linea, this.columna);
-                    ts.agregar(id, nuevo_simbolo);
-                }
-                else {
-                    var global_1 = new Array();
-                    var i = 1;
-                    var j = 1;
-                    for (var _b = 0, _c = this.Array; _b < _c.length; _b++) {
-                        var obj = _c[_b];
-                        var temp = new Array();
-                        for (var _d = 0, obj_1 = obj; _d < obj_1.length; _d++) {
-                            var oj = obj_1[_d];
-                            if (!(oj instanceof Primitivo_1.default)) {
-                                temp.push(oj);
+                    //var valores =  new Array(valor)
+                    if (this.E1 == null) {
+                        var valor = this.E11.getValor(controlador, ts);
+                        var valores = new Array(valor);
+                        var nuevo_simbolo = new Simbolo_1.default(4, this.type, id, valores, this.linea, this.columna);
+                        ts.agregar(id, nuevo_simbolo);
+                    }
+                    else {
+                        var global_1 = new Array();
+                        var i = 1;
+                        var j = 1;
+                        for (var _b = 0, _c = this.Array; _b < _c.length; _b++) {
+                            var obj = _c[_b];
+                            if (!(obj instanceof Primitivo_1.default)) {
+                                global_1.push(obj);
                             }
                             else {
-                                temp.push(oj.getValor(controlador, ts));
+                                global_1.push(obj.getValor(controlador, ts));
                             }
                         }
-                        global_1.push(temp);
+                        var nuevo_simbolo = new Simbolo_1.default(4, this.type, id, global_1, this.linea, this.columna);
+                        ts.agregar(id, nuevo_simbolo);
                     }
-                    //var probandp = global.toString()
-                    //console.log(probandp)
-                    console.log(global_1[3]);
-                    var nuevo_simbolo = new Simbolo_1.default(4, this.type, id, global_1, this.linea, this.columna);
-                    ts.agregar(id, nuevo_simbolo);
+                }
+                else {
+                    if (this.E2 == null) {
+                        var valor1 = this.E11.getValor(controlador, ts);
+                        var valor2 = this.E22.getValor(controlador, ts);
+                        var valores1 = new Array(valor1);
+                        for (var i = 0; i < valores1.length; i++) {
+                            valores1[i] = new this.Array(valor2);
+                        }
+                        var nuevo_simbolo = new Simbolo_1.default(4, this.type, id, valores1, this.linea, this.columna);
+                        ts.agregar(id, nuevo_simbolo);
+                    }
+                    else {
+                        var global_2 = new Array();
+                        var i = 1;
+                        var j = 1;
+                        for (var _d = 0, _e = this.Array; _d < _e.length; _d++) {
+                            var obj = _e[_d];
+                            var temp = new Array();
+                            for (var _f = 0, obj_1 = obj; _f < obj_1.length; _f++) {
+                                var oj = obj_1[_f];
+                                if (!(oj instanceof Primitivo_1.default)) {
+                                    temp.push(oj);
+                                }
+                                else {
+                                    temp.push(oj.getValor(controlador, ts));
+                                }
+                            }
+                            global_2.push(temp);
+                        }
+                        //var probandp = global.toString()
+                        //console.log(probandp)
+                        console.log(global_2[3]);
+                        var nuevo_simbolo = new Simbolo_1.default(4, this.type, id, global_2, this.linea, this.columna);
+                        ts.agregar(id, nuevo_simbolo);
+                    }
                 }
             }
         }

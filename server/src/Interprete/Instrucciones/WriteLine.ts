@@ -23,7 +23,7 @@ export default class WriteLine implements Instruccion{
         let tipo_valor = this.expresion.getTipo(controlador, ts);
         
 
-        if(tipo_valor == tipo.ENTERO || tipo_valor == tipo.DOBLE || tipo_valor == tipo.CARACTER || tipo_valor == tipo.CADENA || tipo_valor == tipo.BOOLEANO){
+        if(tipo_valor == tipo.ENTERO || tipo_valor == tipo.DOBLE || tipo_valor == tipo.CARACTER  || tipo_valor == tipo.BOOLEANO){
             let numero = this.expresion.getValor(controlador,ts);
             if( tipo_valor == tipo.DOBLE ){
                 if (numero % 1 == 0) {
@@ -37,6 +37,11 @@ export default class WriteLine implements Instruccion{
             }
             
             
+        }
+        if(tipo_valor == tipo.CADENA){
+            let cadena = this.expresion.getValor(controlador,ts);
+            cadena = cadena.replace("\t","\\t");
+            controlador.print(cadena,this.validacion);
         }
     }
     

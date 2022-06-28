@@ -14,7 +14,7 @@ var WriteLine = /** @class */ (function () {
     }
     WriteLine.prototype.ejecutar = function (controlador, ts) {
         var tipo_valor = this.expresion.getTipo(controlador, ts);
-        if (tipo_valor == Tipo_1.tipo.ENTERO || tipo_valor == Tipo_1.tipo.DOBLE || tipo_valor == Tipo_1.tipo.CARACTER || tipo_valor == Tipo_1.tipo.CADENA || tipo_valor == Tipo_1.tipo.BOOLEANO) {
+        if (tipo_valor == Tipo_1.tipo.ENTERO || tipo_valor == Tipo_1.tipo.DOBLE || tipo_valor == Tipo_1.tipo.CARACTER || tipo_valor == Tipo_1.tipo.BOOLEANO) {
             var numero = this.expresion.getValor(controlador, ts);
             if (tipo_valor == Tipo_1.tipo.DOBLE) {
                 if (numero % 1 == 0) {
@@ -28,6 +28,11 @@ var WriteLine = /** @class */ (function () {
                 var valor = this.expresion.getValor(controlador, ts);
                 controlador.print(valor, this.validacion);
             }
+        }
+        if (tipo_valor == Tipo_1.tipo.CADENA) {
+            var cadena = this.expresion.getValor(controlador, ts);
+            cadena = cadena.replace("\t", "\\t");
+            controlador.print(cadena, this.validacion);
         }
     };
     WriteLine.prototype.recorrer = function () {

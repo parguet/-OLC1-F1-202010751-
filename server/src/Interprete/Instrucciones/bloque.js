@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Nodo_1 = __importDefault(require("../Ast/Nodo"));
+var TablaSimbolos_1 = __importDefault(require("../TablaSimbolos/TablaSimbolos"));
 var bloque = /** @class */ (function () {
     function bloque(instrucciones, linea, columna) {
         this.instrucciones = instrucciones;
@@ -11,8 +12,9 @@ var bloque = /** @class */ (function () {
         this.columna = columna;
     }
     bloque.prototype.ejecutar = function (controlador, ts) {
+        var tsNuevo = new TablaSimbolos_1.default(ts);
         for (var i = 0; i < this.instrucciones.length; i++) {
-            this.instrucciones[i].ejecutar(controlador, ts);
+            this.instrucciones[i].ejecutar(controlador, tsNuevo);
         }
     };
     bloque.prototype.recorrer = function () {

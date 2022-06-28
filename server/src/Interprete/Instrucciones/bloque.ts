@@ -19,9 +19,9 @@ export default class bloque implements Instruccion{
 
 
     ejecutar(controlador: Controlador, ts: TablaSimbolos) {
-        
+        let tsNuevo = new TablaSimbolos(ts);
         for(let i = 0; i < this.instrucciones.length; i++){
-            this.instrucciones[i].ejecutar(controlador, ts);
+            this.instrucciones[i].ejecutar(controlador, tsNuevo);
         }
     }
 

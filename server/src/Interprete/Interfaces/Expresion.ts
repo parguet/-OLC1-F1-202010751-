@@ -11,6 +11,7 @@ import { tipo } from "../TablaSimbolos/Tipo";
  */
 export interface Expresion{
 
+    
 
     /**
      * @function getTipo retorna el tipo del valor de la expresion 

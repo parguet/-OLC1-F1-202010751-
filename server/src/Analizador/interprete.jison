@@ -169,6 +169,7 @@ caracter        \'[^\']*\'
         const While = require('../Interprete/Instrucciones/SentenciasCiclica/While');
         const DoWhile = require('../Interprete/Instrucciones/SentenciasCiclica/DoWhile');
         const ternario = require('../Interprete/Expresiones/Ternario');
+        const ternarioFuncion = require('../Interprete/Expresiones/TernarioFuncion');
         const detener = require('../Interprete/Instrucciones/SentenciasTransferencia/Break');
 
         const Switch = require('../Interprete/Instrucciones/SentenciasControl/Switch');
@@ -234,6 +235,7 @@ INSTRCCION : DECLARACION   { $$ =  $1;}
             | LLAMADA puntocoma   { $$ = $1; } 
             | return puntocoma        { $$ = new retorno.default(null); } 
             | return E puntocoma      { $$ = new retorno.default($2); } 
+            | TERNARIO puntocoma  { $$ = $1; } 
             | error         { console.log("Error Sintactico: " + yytext 
                                     + " linea: " + this._$.first_line 
                                     + " columna: " + this._$.first_column); 
@@ -243,13 +245,37 @@ INSTRCCION : DECLARACION   { $$ =  $1;}
                             }
             ;
 
+TERNARIO: E interrogacion INSTRCCION_TERNARIO dospuntos INSTRCCION_TERNARIO { $$ = new ternarioFuncion.default($1, $3, $5, @1.first_line, @1.last_column); }
+;
+
+INSTRCCION_TERNARIO
+            : WRITELINE2     { $$ = $1; }
+            | ASIGNACION2    { $$ = $1; }
+            | LLAMADA     { $$ = $1; } 
+            | id decremento   { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+            | id incremento  { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+            | decremento id   { $$ = new asignacion.default($2, new aritmetica.default(new identificador.default($2, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+            | incremento id  { $$ = new asignacion.default($2, new aritmetica.default(new identificador.default($2, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
+;
+
+WRITELINE2 : println parentesisa E parentesisc  { $$ = new writeline.default($3,true,@1.first_line, @1.last_column); }
+        |  print parentesisa E parentesisc  { $$ = new writeline.default($3,false,@1.first_line, @1.last_column); }
+        ;
+
+ASIGNACION2 : id igual E    { $$ = new asignacion.default($1, $3, @1.first_line, @1.last_column); }
+        |  id corchetea E corchetec igual E    { $$ = new asignacion.default($1, $6, @1.first_line, @1.last_column,$3); }
+        |  id corchetea E corchetec corchetea E corchetec igual E    { $$ = new asignacion.default($1, $9, @1.first_line, @1.last_column,$3,$6); }
+        ;
+
 DECLARACION : TIPO LISTA_IDS igual E puntocoma  { $$ = new declaracion.default($1, $2, $4,@1.first_line, @1.last_column);}  
             | TIPO LISTA_IDS puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column);}
-            | TIPO LISTA_IDS corchetea corchetec igual new TIPO corchetea E corchetec puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$7,$9);}
-            | TIPO LISTA_IDS corchetea E corchetec igual corchetea LISTASIMPLE corchetec  puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$1,$4);}
-            | TIPO LISTA_IDS corchetea corchetec corchetea corchetec igual new TIPO corchetea E corchetec corchetea E corchetec puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column);}
+            | TIPO LISTA_IDS corchetea corchetec igual new TIPO corchetea E corchetec puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$7,null,null,$9);}
+            | TIPO LISTA_IDS corchetea corchetec igual corchetea LISTASIMPLE corchetec  puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$1,$7.length,null,null,null,$7);}
+            
+            | TIPO LISTA_IDS corchetea corchetec corchetea corchetec igual new TIPO corchetea E corchetec corchetea E corchetec puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$1,null,null,$11,$14);}
             | TIPO corchetea corchetec LISTA_IDS igual E puntocoma { $$ = new declaracion.default($1, $4, $6,  @1.first_line, @1.last_column);}
-            | TIPO LISTA_IDS corchetea E corchetec corchetea E corchetec igual corchetea DOUBLEARRAY  corchetec puntocoma      { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$1,$4,$7,$11);}
+            | TIPO LISTA_IDS corchetea corchetec corchetea corchetec igual corchetea DOUBLEARRAY  corchetec puntocoma      { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$1,$9.length,$9[0].length,null,null,$9);}
+                        
             ;
 
 DECLARACION2 : const TIPO LISTA_IDS igual E puntocoma { $$ = new declaracion.default($2, $3, $5,  @1.first_line, @1.last_column, null, null, null, null, $1);}
@@ -320,16 +346,11 @@ SENTENCIA_DO_WHILE : do llavea INSTRUCCIONES llavec while parentesisa E parentes
 
 SENTENCIA_FOR : for parentesisa DEC_ASIG_FOR puntocoma E puntocoma ACTUALIZACION_FOR parentesisc llavea INSTRUCCIONES llavec { $$ = new For.default($3, $5, $7, $10, @1.first_line, @1.last_column); }
         ;
-// for(i = 0 ; ...)
+
 DEC_ASIG_FOR : TIPO id igual E  { $$ = new declaracion.default($1, $2, $4,  @1.first_line, @1.last_column);} 
             | id igual E        { $$ = new asignacion.default($1, $3, @1.first_line, @1.last_column); }
             ;
-//x = 0
-// i --
-// i++ 
-// x++ 
-// print(x) -> 1
-// i = i + 1 
+
 ACTUALIZACION_FOR : id decremento { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '-', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
                 | id incremento   { $$ = new asignacion.default($1, new aritmetica.default(new identificador.default($1, @1.first_line, @1.last_column), '+', new primitivo.default(1, 'ENTERO', @1.first_line, @1.last_column), @1.first_line, @1.last_column, false),@1.first_line, @1.last_column ); }
                 | id igual E { $$ = new asignacion.default($1, $3, @1.first_line, @1.last_column); }
@@ -362,6 +383,8 @@ LISTA_DE_PARAMETROS : LISTA_DE_PARAMETROS coma TIPO id          { $$ = $1; $$.pu
              | TIPO corchetea corchetec id                           { $$ = new Array(); $$.push(new simbolo.default(6, $1, $4, null)); }
              | TIPO corchetea corchetec corchetea corchetec id                { $$ = new Array(); $$.push(new simbolo.default(6, $1, $6, null)); }
              ;
+
+
 
 LLAMADA : id parentesisa LISTA_VALORES parentesisc {$$ = new llamada.default($1, $3,@1.first_line, @1.last_column ); }
         | id parentesisa parentesisc           {$$ = new llamada.default($1, [] ,@1.first_line, @1.last_column ); }

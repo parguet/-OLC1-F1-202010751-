@@ -5,6 +5,7 @@ import TablaSimbolos from "../TablaSimbolos/TablaSimbolos";
 import { tipo } from "../TablaSimbolos/Tipo";
 
 export default class Ternario implements Expresion{
+    
 
     public condicion : Expresion;
     public verdadero : Expresion;
