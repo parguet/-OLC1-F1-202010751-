@@ -10,6 +10,8 @@ import TablaSimbolos from "./TablaSimbolos/TablaSimbolos";
 
 export default class Controlador{
 
+    public TablaHtml : Array<string>;
+
     public errores : Array<Errores>;
     public consola : string;
     public sent_ciclica : boolean;
@@ -17,6 +19,7 @@ export default class Controlador{
         this.errores = new Array<Errores>();
         this.consola = "";
         this.sent_ciclica = false;
+        this.TablaHtml = new Array;
     }
 
     obtenererrores(){
@@ -42,6 +45,10 @@ export default class Controlador{
     append(cadena : string){
         this.consola = this.consola + cadena + " \r\n ";
     }
+    
+    getTablaHtml():Array<string>{
+        return this.TablaHtml;
+    }
 
      
     /**
@@ -65,7 +72,7 @@ export default class Controlador{
             ts = ts.sig;
         }
         
-        //console.log(TextSalida)
+        this.TablaHtml.push(TextSalida);
         return TextSalida;
     }
 

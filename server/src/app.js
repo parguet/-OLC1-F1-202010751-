@@ -41,12 +41,15 @@ app.post("/", function (req, res) {
     console.log(req.body.texto.toString());
     console.log("");
     let ast = parser.parse(req.body.texto.toString());
-
+    
     let controlador = new Controlador.default();
     let ts_global = new TablaSimbolos.default(null);
     ast.ejecutar(controlador, ts_global);
 
     var ts_html = controlador.graficar_ts(controlador, ts_global);
+    
+    let TablaArray = controlador.getTablaHtml();
+    TablaArray.pop;
     var ts_html_error = controlador.obtenererrores();
 
 
@@ -65,7 +68,7 @@ app.post("/", function (req, res) {
     });
     //console.log("\nTabla de Simbolos\n")
     //console.log(variables);
-    html1(variables);
+    html1(variables, TablaArray);
 
 
 
@@ -94,7 +97,9 @@ app.post("/", function (req, res) {
 );
 
 
-function html1(variables) {
+
+
+function html1(variables, Tablas) {
     console.log("\nTabla de Simbolos\n")
     var html = '<!DOCTYPE html>' +
         '<html lang="es">' +
@@ -114,7 +119,7 @@ function html1(variables) {
        '<a href="http://localhost:8080/errores"  style="width: 150px;" class="btn btn-secondary">Tabla de errores</a>'+
       '</div>'+
         '<center>' +
-        '<h1>Tabla de Simbolos</h1>' +
+        '<h1>Tabla de Simbolos Global</h1>' +
         '<br>' +
         '<table class="table table-success table-striped-columns">' +
         '<thead>' +
@@ -142,7 +147,49 @@ function html1(variables) {
 
         html += '</tr>';
     }
-    html += '</tbody></table></center></div></body></html>'
+    html += '</tbody></table>';
+    for (var x = 0; x < Tablas.length-1; x++) { 
+        let variabless = [];
+        var fila = Tablas[x].split('~')
+        fila.forEach(value => {
+            var cadenasimple = value.split(',')
+            variabless.push(cadenasimple);
+        });
+
+        html += '<h1>Tabla de Simbolos '+(x+1)+'</h1>' +
+        '<br>' +
+        '<table class="table table-success table-striped-columns">' +
+        '<thead>' +
+        '<tr>' +
+        '<th scope="col">#</th>' +
+        '<th scope="col">Rol</th>' +
+        '<th scope="col">Nombre</th>' +
+        '<th scope="col">Tipo</th>' +
+        '<th scope="col">Valor</th>' +
+        '<th scope="col">Linea</th>' +
+        '<th scope="col">Columna</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>';
+    for (var i = 0; i < variabless.length; i++) {
+        html += '<tr>';
+        html += '<th scope="row">' + (i + 1) + '</th>';
+
+        html += '<td>' + variabless[i][0] + '</td>';
+        html += '<td>' + variabless[i][1] + '</td>';
+        html += '<td>' + variabless[i][2] + '</td>';
+        html += '<td>' + variabless[i][4] + '</td>';
+        html += '<td>' + variabless[i][6] + '</td>';
+        html += '<td>' + variabless[i][7] + '</td>';
+
+        html += '</tr>';
+    }
+    html += '</tbody></table>';
+     }
+    
+
+
+    html += '</center></div></body></html>'
     let fs = require('fs')
     try {
         let data = fs.writeFileSync('../front/tabla.html', html)

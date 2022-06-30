@@ -117,6 +117,7 @@ caracter        \'[^\']*\'
 "call"            { console.log("Reconocio : "+ yytext); return 'call'}
 
 "return"            { console.log("Reconocio : "+ yytext); return 'return'}
+"graficar_ts"            { console.log("Reconocio : "+ yytext); return 'graficar'}
 
 
 
@@ -186,7 +187,8 @@ caracter        \'[^\']*\'
 
         const bloque = require('../Interprete/Instrucciones/bloque');
 
-        const errores = require('../Interprete/Ast/Errores')
+        const errores = require('../Interprete/Ast/Errores');
+        const Graficar = require('../Interprete/Instrucciones/Graficar');
 %}
 
 /* PRECEDENCIA */
@@ -236,6 +238,7 @@ INSTRCCION : DECLARACION   { $$ =  $1;}
             | return puntocoma        { $$ = new retorno.default(null); } 
             | return E puntocoma      { $$ = new retorno.default($2); } 
             | TERNARIO puntocoma  { $$ = $1; } 
+            | graficar parentesisa parentesisc puntocoma {$$ = new Graficar.default(@1.first_line, @1.last_column)}
             | error         { console.log("Error Sintactico: " + yytext 
                                     + " linea: " + this._$.first_line 
                                     + " columna: " + this._$.first_column); 

@@ -112,15 +112,7 @@ node034342323[label = "Primitivo"];
 node034342323 -> node03434232301
 node03434232301[label = "2"];
 node034 -> node03445
-node03445[label = "Llamada"];
-node03445 -> node0344501
-node0344501[label = "graficar_ts"];
-node03445 -> node0344512
-node0344512[label = "("];
-node03445 -> node0344523
-node0344523[label = "Parametros"];
-node03445 -> node0344534
-node0344534[label = ")"];
+node03445[label = "Graficar_ts"];
 node034 -> node03456
 node03456[label = "BLOQUE"];
 node03456 -> node0345601
@@ -184,15 +176,7 @@ node03456232323[label = "Primitivo"];
 node03456232323 -> node0345623232301
 node0345623232301[label = "2"];
 node03456 -> node0345634
-node0345634[label = "Llamada"];
-node0345634 -> node034563401
-node034563401[label = "graficar_ts"];
-node0345634 -> node034563412
-node034563412[label = "("];
-node0345634 -> node034563423
-node034563423[label = "Parametros"];
-node0345634 -> node034563434
-node034563434[label = ")"];
+node0345634[label = "Graficar_ts"];
 node03456 -> node0345645
 node0345645[label = "BLOQUE"];
 node0345645 -> node034564501
@@ -448,15 +432,7 @@ node034564578340112[label = "Primitivo"];
 node034564578340112 -> node03456457834011201
 node03456457834011201[label = "OPEADOR TERMARIO COMO EXPRESION... NO! "];
 node0345645 -> node034564589
-node034564589[label = "Llamada"];
-node034564589 -> node03456458901
-node03456458901[label = "graficar_ts"];
-node034564589 -> node03456458912
-node03456458912[label = "("];
-node034564589 -> node03456458923
-node03456458923[label = "Parametros"];
-node034564589 -> node03456458934
-node03456458934[label = ")"];
+node034564589[label = "Graficar_ts"];
 node0 -> node045
 node045[label = "Funcion"];
 node045 -> node04501
@@ -1851,6 +1827,30 @@ node0626312 -> node062631212
 node062631212[label = "Identificador"];
 node062631212 -> node06263121201
 node06263121201[label = "vector_principal"];
+node0 -> node06364
+node06364[label = "DECLARACION"];
+node06364 -> node0636401
+node0636401[label = "CADENA"];
+node06364 -> node0636412
+node0636412[label = "Ids"];
+node0636412 -> node063641201
+node063641201[label = "myname"];
+node06364 -> node0636423
+node0636423[label = "Primitivo"];
+node0636423 -> node063642301
+node063642301[label = "<Paulo>"];
+node0 -> node06465
+node06465[label = "DECLARACION"];
+node06465 -> node0646501
+node0646501[label = "CADENA"];
+node06465 -> node0646512
+node0646512[label = "Ids"];
+node0646512 -> node064651201
+node064651201[label = "mylastname"];
+node06465 -> node0646523
+node0646523[label = "Primitivo"];
+node0646523 -> node064652301
+node064652301[label = "<Argueta>"];
  
 
 }

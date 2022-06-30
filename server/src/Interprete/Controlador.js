@@ -8,6 +8,7 @@ var Controlador = /** @class */ (function () {
         this.errores = new Array();
         this.consola = "";
         this.sent_ciclica = false;
+        this.TablaHtml = new Array;
     }
     Controlador.prototype.obtenererrores = function () {
         var TextSalida = "";
@@ -29,6 +30,9 @@ var Controlador = /** @class */ (function () {
     Controlador.prototype.append = function (cadena) {
         this.consola = this.consola + cadena + " \r\n ";
     };
+    Controlador.prototype.getTablaHtml = function () {
+        return this.TablaHtml;
+    };
     /**
      * @function graficar_ts funcion para graficar la tabla de simbolos
      * @param controlador lleva el control del programa
@@ -47,7 +51,7 @@ var Controlador = /** @class */ (function () {
             });
             ts = ts.sig;
         }
-        //console.log(TextSalida)
+        this.TablaHtml.push(TextSalida);
         return TextSalida;
     };
     /**
