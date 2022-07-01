@@ -1,0 +1,308 @@
+PAULO VLADEMIR ARGUETA ORTEGA
+202010751
+OLC1 
+-------------------------------
+
+
+
+num [0-9]+
+id      ([a-zA-Z])[a-zA-Z0-9_ñÑ]*
+
+
+escapechar      [\'\"\\ntr]
+escape          \\{escapechar}
+aceptacion      [^\"\\] 
+cadena          (\"({escape} | {aceptacion})*\")
+caracter        \'[^\']*\' 
+
+
+
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]       
+[/][/].*                                  
+"typeOf"   
+"--"                  
+"++"              
+"=="                
+"**"                 
+"%"                  
+"("                   
+")"                 
+"["                
+"]"                
+";"                  
+"="                   
+","                
+"{"                  
+"}"                  
+"?"                  
+":"                  
+"+"                   
+"**"                   
+"*"                  
+"/"                  
+"-"                   
+"%"                 
+">="                 
+">"                  
+"<="               
+"<"                 
+"!="                 
+"&&"                  
+"||"                   
+"!"                
+"^"                                 
+"true"                 
+"false"                  
+"int"                   
+"double"                  
+"string"                  
+"char"                  
+"boolean"                  
+"const"                                 
+"print"                
+"println"                 
+"if"              
+"while"            
+"do"          
+"else"             
+"break"            
+"for"            
+"switch"            
+"case"                     
+"default"            
+"continue"                 
+"void"         
+"call"          
+"return"            
+[0-9]+("."[0-9]+)\b  
+{num}                
+{id}              
+{cadena}              
+{caracter}                 
+[\s\r\n\t]             
+\s+                   
+"//".*                
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] 
+<<EOF>>                               
+
+
+
+
+
+// PRECEDENCIA 
+%right 'interrogacion'
+%left 'or'
+%left 'and'
+%right 'not' 
+%left 'dobleigual' 'diferente' 'menorque' 'menorigual' 'mayorque' 'mayorigual'
+%left 'mas' 'menos'
+%left 'division'  'multiplicacion' 
+%left 'potencia' 
+%right 'modulo'
+%right UMINUS
+%start INICIO
+
+
+// GRAMMAR
+
+INICIO : INSTRUCCIONES EOF 
+        ;
+
+INSTRUCCIONES : INSTRUCCIONES INSTRCCION  
+            | INSTRCCION                
+            ;
+
+INSTRCCION : DECLARACION   
+            | DECLARACION2   
+            | IMPRIMIR     
+            | ASIGNACION    
+            | SENTENCIA_IF       
+            | SENTENCIA_IF_SIMPLE    
+            | BLOQUE      
+            | SENTENCIA_WHILE   
+            | SENTENCIA_DO_WHILE  
+            | break puntocoma    
+            | SENTENCIA_SWITCH   
+            | SENTENCIA_FOR      
+            | id decremento puntocoma  
+            | id incremento puntocoma 
+            | decremento id puntocoma 
+            | incremento id puntocoma 
+            | continue puntocoma  
+            | FUNCIONES   
+            | LLAMADA puntocoma  
+            | return puntocoma       
+            | return E puntocoma   
+            | error         
+            ;
+
+DECLARACION : TIPO LISTA_IDS igual E puntocoma   
+            | TIPO LISTA_IDS puntocoma         
+            | TIPO LISTA_IDS corchetea corchetec igual new TIPO corchetea E corchetec puntocoma     
+            | TIPO LISTA_IDS corchetea corchetec igual corchetea LISTASIMPLE corchetec  puntocoma         
+            | TIPO LISTA_IDS corchetea corchetec corchetea corchetec igual new TIPO corchetea E corchetec corchetea E corchetec puntocoma       
+            | TIPO LISTA_IDS corchetea corchetec igual E puntocoma 
+            | TIPO LISTA_IDS corchetea corchetec corchetea corchetec igual corchetea DOUBLEARRAY  corchetec puntocoma     
+            ;
+
+DECLARACION2 : const TIPO LISTA_IDS igual E puntocoma 
+             ;            
+
+DOUBLEARRAY : DOUBLEARRAY coma corchetea LISTASIMPLE corchetec 
+            | corchetea LISTASIMPLE corchetec  
+	    ;
+
+LISTASIMPLE : LISTASIMPLE coma E 
+	    | E  
+	    ;
+
+TIPO : int       
+     | double   
+     | string    
+     | char      
+     | boolean   
+     ;
+
+LISTA_IDS : LISTA_IDS coma id   
+          | id                  
+          ;
+
+IMPRIMIR : println parentesisa E parentesisc puntocoma 
+        |  print parentesisa E parentesisc puntocoma 
+        ;
+
+ASIGNACION : id igual E puntocoma  
+        |  id corchetea E corchetec igual E puntocoma  
+        |  id corchetea E corchetec corchetea E corchetec igual E puntocoma   
+        ;
+
+SENTENCIA_IF : if parentesisa E parentesisc llavea INSTRUCCIONES llavec 
+        | if parentesisa E parentesisc llavea INSTRUCCIONES llavec else llavea INSTRUCCIONES llavec 
+        | if parentesisa E parentesisc llavea INSTRUCCIONES llavec else SENTENCIA_IF 
+        ;
+
+SENTENCIA_IF_SIMPLE : if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE 
+                | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else INSTRUCCION_IF_SIMPLE 
+                | if parentesisa E parentesisc INSTRUCCION_IF_SIMPLE else SENTENCIA_IF_SIMPLE  
+                ;
+
+INSTRUCCION_IF_SIMPLE : DECLARACION   
+            | DECLARACION2 
+            | WRITELINE     
+            | ASIGNACION    
+            | break puntocoma     
+            | id decremento puntocoma  
+            | id incremento puntocoma 
+            | continue puntocoma  
+            | LLAMADA puntocoma   
+            | return puntocoma        
+            | return E puntocoma       
+;          
+
+BLOQUE: llavea INSTRUCCIONES llavec 
+        ;
+
+SENTENCIA_WHILE : while parentesisa E parentesisc llavea INSTRUCCIONES llavec 
+            ;
+
+
+SENTENCIA_DO_WHILE : do llavea INSTRUCCIONES llavec while parentesisa E parentesisc puntocoma  
+            ;
+
+SENTENCIA_FOR : for parentesisa DEC_ASIG_FOR puntocoma E puntocoma ACTUALIZACION_FOR parentesisc llavea INSTRUCCIONES llavec 
+        ;
+
+DEC_ASIG_FOR : TIPO id igual E  
+            | id igual E       
+            ;
+
+ACTUALIZACION_FOR : id decremento 
+                | id incremento 
+                | id igual E 
+                ;
+
+SENTENCIA_SWITCH : switch parentesisa E parentesisc llavea CASELIST llavec         
+            | switch parentesisa E parentesisc llavea CASELIST DEFAULT llavec   
+            | switch parentesisa E parentesisc llavea DEFAULT llavec            
+            ;
+
+CASELIST : CASELIST CASO       
+        | CASO                  
+        ;
+
+CASO : case E dospuntos INSTRUCCIONES  
+    ;
+
+DEFAULT : default dospuntos INSTRUCCIONES 
+        ;
+
+FUNCIONES 
+        : TIPO id parentesisa LISTA_DE_PARAMETROS parentesisc llavea INSTRUCCIONES llavec 
+        | TIPO id parentesisa parentesisc llavea INSTRUCCIONES llavec           
+        | void id parentesisa LISTA_DE_PARAMETROS parentesisc llavea INSTRUCCIONES llavec   
+        | void id parentesisa parentesisc llavea INSTRUCCIONES llavec              
+        ;
+
+LISTA_DE_PARAMETROS : LISTA_DE_PARAMETROS coma TIPO id         
+             | TIPO id                          
+             | TIPO corchetea corchetec id                           
+             | TIPO corchetea corchetec corchetea corchetec id               
+             ;
+
+LLAMADA : id parentesisa LISTA_VALORES parentesisc 
+        | id parentesisa parentesisc           
+        | call id parentesisa LISTA_VALORES parentesisc 
+        | call id parentesisa parentesisc          
+        ; 
+
+LISTA_VALORES : LISTA_VALORES coma E          
+        | E                           
+        ; 
+
+ 
+
+E : E mas E        
+    | E menos E     
+    | E multiplicacion E      
+    | E division E       
+    | E potencia E        
+    | E modulo E        
+    | E mayorigual E  
+    | E mayorque E   
+    | E menorigual E 
+    | E menorque E  
+    | E dobleigual E 
+    | E diferente E  
+    | E and E       
+    | E or E      
+    | not E         
+    | casteodouble E     
+    | casteoint E  
+    | casteostring parentesisa E parentesisc 
+    | casteochar E  
+    | casteotipo parentesisa E parentesisc 
+    | casteotolower parentesisa E parentesisc 
+    | casteotoupper parentesisa E parentesisc 
+    | length parentesisa E parentesisc 
+    | chararray parentesisa E parentesisc
+    | round parentesisa E parentesisc 
+    | menos E %prec UMINUS    
+    | parentesisa E parentesisc       
+    | decimal           
+    | entero            
+    | id                
+    | id corchetea E corchetec               
+    | id corchetea E corchetec corchetea E corchetec   
+    | cadena           
+    | caracter          
+    | true              
+    | false             
+    | E interrogacion E dospuntos E 
+    | id incremento       
+    | id decremento         
+    | LLAMADA           
+    ;
+
+
+
+LINK DEL REPOSITORIO---->  https://github.com/parguet/-OLC1-F1-202010751-

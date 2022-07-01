@@ -440,6 +440,9 @@ var Logica = /** @class */ (function (_super) {
             padre.AddHijo(new Nodo_1.default('round', ""));
             padre.AddHijo(expre1_nodo);
         }
+        else if (this.signo_operador == '(chararray)') {
+            padre.AddHijo(new Nodo_1.default('chararray', ""));
+        }
         else {
             padre.AddHijo(expre1_nodo);
             padre.AddHijo(new Nodo_1.default(this.signo_operador, ""));

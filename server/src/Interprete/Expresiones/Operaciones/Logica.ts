@@ -428,6 +428,8 @@ export default class Logica extends Operacion implements Expresion{
         }else if(this.signo_operador == '(round)'){
             padre.AddHijo(new Nodo('round' , ""))
             padre.AddHijo(expre1_nodo)
+        }else if(this.signo_operador == '(chararray)'){
+            padre.AddHijo(new Nodo('chararray' , ""))
         }else{
             padre.AddHijo(expre1_nodo)
             padre.AddHijo(new Nodo(this.signo_operador , ""))

@@ -189,6 +189,7 @@ caracter        \'[^\']*\'
 
         const errores = require('../Interprete/Ast/Errores');
         const Graficar = require('../Interprete/Instrucciones/Graficar');
+        const TocharArray = require('../Interprete/Instrucciones/TocharArray');
 %}
 
 /* PRECEDENCIA */
@@ -274,12 +275,11 @@ DECLARACION : TIPO LISTA_IDS igual E puntocoma  { $$ = new declaracion.default($
             | TIPO LISTA_IDS puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column);}
             | TIPO LISTA_IDS corchetea corchetec igual new TIPO corchetea E corchetec puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$7,null,null,$9);}
             | TIPO LISTA_IDS corchetea corchetec igual corchetea LISTASIMPLE corchetec  puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$1,$7.length,null,null,null,$7);}
-            
+
             | TIPO LISTA_IDS corchetea corchetec corchetea corchetec igual new TIPO corchetea E corchetec corchetea E corchetec puntocoma         { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$1,null,null,$11,$14);}
-            | TIPO corchetea corchetec LISTA_IDS igual E puntocoma { $$ = new declaracion.default($1, $4, $6,  @1.first_line, @1.last_column);}
+            | TIPO LISTA_IDS corchetea corchetec  igual E puntocoma { $$ = new declaracion.default($1, $2, $6,  @1.first_line, @1.last_column);}
             | TIPO LISTA_IDS corchetea corchetec corchetea corchetec igual corchetea DOUBLEARRAY  corchetec puntocoma      { $$ = new declaracion.default($1, $2, null,  @1.first_line, @1.last_column,$1,$9.length,$9[0].length,null,null,$9);}
-                        
-            ;
+           ;
 
 DECLARACION2 : const TIPO LISTA_IDS igual E puntocoma { $$ = new declaracion.default($2, $3, $5,  @1.first_line, @1.last_column, null, null, null, null, $1);}
              ;            
@@ -429,7 +429,7 @@ E : E mas E         { $$ = new aritmetica.default($1, '+', $3, @1.first_line, @1
     | casteotipo parentesisa E parentesisc { $$ = new logica.default($3, '(tipo)', null, @1.first_line, @1.last_column,true); } 
     | casteotolower parentesisa E parentesisc { $$ = new logica.default($3, '(lower)', null, @1.first_line, @1.last_column,true); } 
     | casteotoupper parentesisa E parentesisc { $$ = new logica.default($3, '(upper)', null, @1.first_line, @1.last_column,true); } 
-    | length parentesisa E parentesisc { $$ = new logica.default($3, '(length)', null, @1.first_line, @1.last_column,true); } 
+    | length parentesisa E parentesisc { $$ = new logica.default($3, '(length)', null, @1.first_line, @1.last_column,true); }  
     | chararray parentesisa E parentesisc { $$ = new logica.default($3, '(chararray)', null, @1.first_line, @1.last_column,true); } 
     | round parentesisa E parentesisc { $$ = new logica.default($3, '(round)', null, @1.first_line, @1.last_column,true); } 
     | menos E %prec UMINUS    { $$ = new aritmetica.default($2, 'UNARIO', null, @1.first_line, @1.last_column,true); }

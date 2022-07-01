@@ -25,7 +25,12 @@ var Ast = /** @class */ (function () {
             var instruccion = _c[_b];
             if (instruccion instanceof Declaracion_1.default) {
                 //if(instruccion instanceof Declaracion ){
-                instruccion.ejecutar(controlador, ts);
+                try {
+                    instruccion.ejecutar(controlador, ts);
+                }
+                catch (error) {
+                    console.log(error);
+                }
             }
         }
         //3ra pada. ejecutamos todas las demas instrucciones

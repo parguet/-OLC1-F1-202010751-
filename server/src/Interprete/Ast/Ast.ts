@@ -3,6 +3,7 @@ import Asignacion from "../Instrucciones/Asignacion";
 import Declaracion from "../Instrucciones/Declaracion";
 import Funcion from "../Instrucciones/Funcion";
 import StartWith from "../Instrucciones/StartWith";
+import TocharArray from "../Instrucciones/TocharArray";
 import { Instruccion } from "../Interfaces/Instruccion";
 import TablaSimbolos from "../TablaSimbolos/TablaSimbolos";
 import Nodo from "./Nodo";
@@ -28,10 +29,14 @@ export default class Ast implements Instruccion{
 
         //2 da pasada. ejecutar las declaraciones de variables
         for(let instruccion of this.lista_instrucciones){
-            if(instruccion instanceof Declaracion){
+            if(instruccion instanceof Declaracion ){
             //if(instruccion instanceof Declaracion ){
-
-                instruccion.ejecutar(controlador,ts);
+                try {
+                    instruccion.ejecutar(controlador,ts);
+                } catch (error) {
+                    console.log(error)
+                }
+                
             }
         }
 
